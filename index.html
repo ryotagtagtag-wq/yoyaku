@@ -1,0 +1,2880 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>超人気病院 予約ゲーム</title>
+
+<style>
+:root {
+    --bg: #061018;
+    --panel: #101a24;
+    --panel2: #0b131b;
+    --line: #293b4b;
+    --text: #edf7ff;
+    --sub: #8ea1b2;
+    --blue: #27d8ff;
+    --blue2: #487cff;
+    --green: #29e58b;
+    --red: #ff5574;
+    --yellow: #ffd45c;
+    --orange: #ff9d42;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        system-ui,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(39,216,255,.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(72,124,255,.12),
+            transparent 35%
+        ),
+        var(--bg);
+}
+
+/* ==============================
+   HEADER
+============================== */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    background: rgba(5,10,15,.92);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: auto;
+    padding: 14px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    color: var(--blue);
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.hud {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.timer {
+    font-family: monospace;
+    color: var(--yellow);
+    font-weight: bold;
+}
+
+.timer.danger {
+    color: var(--red);
+    animation: blink .5s infinite alternate;
+}
+
+.score {
+    color: var(--sub);
+    font-size: 13px;
+}
+
+.score strong {
+    color: white;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: .35; }
+}
+
+/* ==============================
+   SECURITY SCREEN
+============================== */
+
+.security-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle,
+            #10232d,
+            #02060a 70%
+        );
+}
+
+.security-screen.hidden {
+    display: none;
+}
+
+.security-card {
+    width: min(95vw, 480px);
+
+    padding: 32px;
+
+    border: 1px solid #355063;
+    border-radius: 20px;
+
+    background: rgba(11,20,29,.97);
+
+    box-shadow:
+        0 30px 100px #000;
+
+    text-align: center;
+}
+
+.security-icon {
+    font-size: 52px;
+}
+
+.security-card h1 {
+    margin: 10px 0;
+}
+
+.security-card p {
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.security-code {
+    margin: 25px 0;
+
+    padding: 18px;
+
+    background: #05090e;
+
+    border:
+        1px dashed
+        #5b7385;
+
+    border-radius: 12px;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 36px;
+    letter-spacing: 9px;
+
+    color: var(--blue);
+
+    user-select: none;
+
+    text-shadow:
+        0 0 20px
+        rgba(39,216,255,.35);
+}
+
+.security-input {
+    width: 100%;
+
+    padding: 14px;
+
+    background: #071019;
+
+    color: white;
+
+    border:
+        1px solid
+        #385062;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+
+    text-align: center;
+
+    letter-spacing: 4px;
+
+    outline: none;
+}
+
+.security-input:focus {
+    border-color: var(--blue);
+}
+
+.security-button {
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--blue2)
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.security-error {
+    min-height: 24px;
+
+    margin-top: 12px;
+
+    color: var(--red);
+
+    font-size: 13px;
+}
+
+/* ==============================
+   MAIN
+============================== */
+
+.container {
+    max-width: 1200px;
+
+    margin: 25px auto;
+
+    padding:
+        0 20px
+        60px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        350px;
+
+    gap: 20px;
+}
+
+@media(max-width:900px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================
+   PANEL
+============================== */
+
+.panel {
+    background:
+        rgba(16,26,36,.96);
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.35);
+}
+
+.panel-header {
+    padding: 25px;
+
+    border-bottom:
+        1px solid
+        var(--line);
+}
+
+.panel-header h1 {
+    margin: 0;
+
+    font-size: 28px;
+}
+
+.panel-header p {
+    color: var(--sub);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    margin: 8px 0 0;
+}
+
+.live {
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,85,116,.06);
+
+    border:
+        1px solid
+        rgba(255,85,116,.25);
+
+    color:
+        #ffb1c1;
+
+    font-size: 12px;
+}
+
+/* ==============================
+   FORM
+============================== */
+
+.form {
+    padding: 24px;
+}
+
+.section-title {
+    margin:
+        27px 0
+        14px;
+
+    padding-left: 10px;
+
+    border-left:
+        3px solid
+        var(--blue);
+
+    color:
+        var(--blue);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.section-title:first-child {
+    margin-top: 0;
+}
+
+.form-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap: 14px;
+}
+
+@media(max-width:600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        #b0c0ce;
+
+    font-size: 12px;
+}
+
+.field select,
+.field input {
+    width: 100%;
+
+    padding:
+        12px 13px;
+
+    border:
+        1px solid
+        #304453;
+
+    border-radius: 10px;
+
+    background:
+        #071019;
+
+    color:
+        white;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.field select:focus,
+.field input:focus {
+    border-color: var(--blue);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(39,216,255,.08);
+}
+
+/* ==============================
+   TIMES
+============================== */
+
+.time-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap: 9px;
+}
+
+@media(max-width:600px) {
+    .time-grid {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+.time {
+    padding: 12px 5px;
+
+    border:
+        1px solid
+        #2b3d4d;
+
+    border-radius: 10px;
+
+    background:
+        #09131c;
+
+    color:
+        #dfeaf2;
+
+    cursor: pointer;
+
+    transition: .12s;
+}
+
+.time:hover {
+    border-color:
+        var(--blue);
+}
+
+.time.selected {
+    background:
+        #073947;
+
+    border-color:
+        var(--blue);
+
+    color:
+        var(--blue);
+}
+
+.time.full {
+    background:
+        #161d24;
+
+    color:
+        #596875;
+
+    cursor:
+        not-allowed;
+
+    text-decoration:
+        line-through;
+}
+
+.time small {
+    display:block;
+
+    margin-top:
+        3px;
+
+    font-size:
+        9px;
+}
+
+/* ==============================
+   CHECKBOX
+============================== */
+
+.check-list {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap: 10px;
+}
+
+@media(max-width:600px) {
+    .check-list {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+.check {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        #2a3b49;
+
+    background:
+        #09131c;
+
+    border-radius:
+        10px;
+
+    color:
+        #cbd8e2;
+
+    font-size:
+        12px;
+
+    cursor:
+        pointer;
+
+    line-height:
+        1.5;
+}
+
+/* ==============================
+   CONSENT
+============================== */
+
+.consent {
+    margin-top: 15px;
+
+    padding: 16px;
+
+    border:
+        1px solid
+        #3a4b58;
+
+    background:
+        #081119;
+
+    border-radius:
+        12px;
+}
+
+.consent-title {
+    color:
+        var(--yellow);
+
+    font-weight:
+        bold;
+
+    font-size:
+        12px;
+
+    margin-bottom:
+        8px;
+}
+
+.consent-text {
+    color:
+        #91a4b4;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.8;
+
+    max-height:
+        120px;
+
+    overflow:
+        auto;
+
+    margin-bottom:
+        12px;
+}
+
+/* ==============================
+   BUTTON
+============================== */
+
+.reserve {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 17px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--blue2)
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 12px 35px
+        rgba(30,150,255,.18);
+}
+
+.reserve:hover {
+    filter: brightness(1.1);
+}
+
+.reserve:active {
+    transform: scale(.98);
+}
+
+/* ==============================
+   SIDE
+============================== */
+
+.side {
+    padding: 20px;
+}
+
+.side-title {
+    color:
+        var(--sub);
+
+    letter-spacing:
+        2px;
+
+    font-size:
+        11px;
+
+    margin-bottom:
+        11px;
+}
+
+.stat-card {
+    padding:
+        17px;
+
+    background:
+        #081119;
+
+    border:
+        1px solid
+        #293c4b;
+
+    border-radius:
+        13px;
+
+    margin-bottom:
+        12px;
+}
+
+.stat-number {
+    font-size:
+        34px;
+
+    font-weight:
+        900;
+}
+
+.red {
+    color:
+        var(--red);
+}
+
+.yellow {
+    color:
+        var(--yellow);
+}
+
+.green {
+    color:
+        var(--green);
+}
+
+.stat-card p {
+    margin:
+        5px 0 0;
+
+    color:
+        var(--sub);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.7;
+}
+
+.queue {
+    height:
+        10px;
+
+    margin-top:
+        12px;
+
+    background:
+        #1b2731;
+
+    border-radius:
+        99px;
+
+    overflow:
+        hidden;
+}
+
+.queue-inner {
+    height:
+        100%;
+
+    width:
+        96%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--yellow),
+            var(--red)
+        );
+}
+
+/* ==============================
+   LOG
+============================== */
+
+.log-box {
+    max-height:
+        320px;
+
+    overflow:
+        auto;
+
+    background:
+        #060c12;
+
+    border:
+        1px solid
+        #253540;
+
+    border-radius:
+        10px;
+}
+
+.log-item {
+    padding:
+        9px 11px;
+
+    border-bottom:
+        1px solid
+        #16242e;
+
+    color:
+        #8ea2b2;
+
+    font-family:
+        monospace;
+
+    font-size:
+        10px;
+}
+
+.log-item.good {
+    color:
+        var(--green);
+}
+
+/* ==============================
+   MODAL
+============================== */
+
+.modal {
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        500;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(0,0,0,.84);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.modal.show {
+    display:
+        flex;
+}
+
+.modal-card {
+    width:
+        min(95vw,520px);
+
+    padding:
+        30px;
+
+    background:
+        #101a23;
+
+    border:
+        1px solid
+        #415767;
+
+    border-radius:
+        20px;
+
+    text-align:
+        center;
+
+    box-shadow:
+        0 30px 100px
+        #000;
+}
+
+.modal-icon {
+    font-size:
+        55px;
+}
+
+.modal-card h2 {
+    margin:
+        10px 0;
+}
+
+.modal-card p {
+    color:
+        #a6b6c4;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.8;
+}
+
+.result-box {
+    margin:
+        20px 0;
+
+    padding:
+        20px;
+
+    border:
+        1px dashed
+        #526977;
+
+    background:
+        #071018;
+
+    border-radius:
+        12px;
+
+    text-align:
+        left;
+
+    font-family:
+        monospace;
+
+    line-height:
+        1.9;
+
+    font-size:
+        12px;
+}
+
+.big-score {
+    margin:
+        18px 0;
+
+    font-size:
+        46px;
+
+    font-weight:
+        900;
+
+    color:
+        var(--blue);
+
+    text-shadow:
+        0 0 22px
+        rgba(39,216,255,.3);
+}
+
+.close {
+    width:
+        100%;
+
+    padding:
+        14px;
+
+    border:
+        0;
+
+    border-radius:
+        11px;
+
+    background:
+        var(--blue);
+
+    color:
+        #001119;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+.restart {
+    width:
+        100%;
+
+    margin-top:
+        10px;
+
+    padding:
+        11px;
+
+    background:
+        transparent;
+
+    color:
+        #9baab7;
+
+    border:
+        1px solid
+        #334754;
+
+    border-radius:
+        10px;
+
+    cursor:
+        pointer;
+}
+
+/* ==============================
+   SHAKE
+============================== */
+
+.shake {
+    animation:
+        shake .35s;
+}
+
+@keyframes shake {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-7px);
+    }
+
+    50% {
+        transform: translateX(7px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SECURITY
+====================================================== -->
+
+<div
+    class="security-screen"
+    id="securityScreen"
+>
+
+    <div class="security-card">
+
+        <div class="security-icon">
+            🔐
+        </div>
+
+        <h1>
+            SECURITY CHECK
+        </h1>
+
+        <p>
+            予約システムへ接続するには、
+            下のセキュリティコードを入力してください。
+        </p>
+
+        <div
+            class="security-code"
+            id="securityCode"
+        ></div>
+
+        <input
+            id="securityInput"
+            class="security-input"
+            placeholder="コードを入力"
+            autocomplete="off"
+            maxlength="8"
+        >
+
+        <button
+            id="securityButton"
+            class="security-button"
+        >
+            セキュリティ認証
+        </button>
+
+        <div
+            id="securityError"
+            class="security-error"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+    <div class="header-inner">
+
+        <div class="logo">
+            HOSPI-TOWN RESERVATION
+        </div>
+
+        <div class="hud">
+
+            <div class="timer">
+                ⏱
+                <span id="timer">
+                    02:00
+                </span>
+            </div>
+
+            <div class="score">
+                SCORE:
+                <strong id="score">
+                    0
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="container">
+
+
+<!-- =====================================================
+     LEFT
+====================================================== -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <h1>
+            星見ヶ丘総合病院
+        </h1>
+
+        <p>
+            全国から患者が集まる超人気病院。<br>
+            予約枠は非常に限られています。
+        </p>
+
+        <div class="live">
+            🚨 現在の予約倍率：
+            <strong>
+                38.7倍
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="form">
+
+
+        <!-- =====================
+             BASIC
+        ====================== -->
+
+        <div class="section-title">
+            ◆ 基本予約
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    診療科
+                </label>
+
+                <select id="department">
+
+                    <option>内科</option>
+                    <option>外科</option>
+                    <option>皮膚科</option>
+                    <option>眼科</option>
+                    <option>耳鼻咽喉科</option>
+                    <option>小児科</option>
+                    <option>整形外科</option>
+                    <option>脳神経外科</option>
+                    <option>心臓血管外科</option>
+                    <option>謎解き科</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    担当医
+                </label>
+
+                <select id="doctor">
+
+                    <option>青木先生</option>
+                    <option>田中先生</option>
+                    <option>佐藤先生</option>
+                    <option>山本先生</option>
+                    <option>鈴木先生</option>
+                    <option>院長</option>
+                    <option>空いている先生</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    受診日
+                </label>
+
+                <select id="date">
+
+                    <option>2026年9月20日</option>
+                    <option>2026年9月21日</option>
+                    <option>2026年9月22日</option>
+                    <option>2026年9月23日</option>
+                    <option>2026年9月24日</option>
+                    <option>2026年9月25日</option>
+                    <option>2026年9月26日</option>
+                    <option>2026年9月27日</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    時間帯
+                </label>
+
+                <select id="period">
+
+                    <option>早朝</option>
+                    <option>午前</option>
+                    <option>昼</option>
+                    <option>午後</option>
+                    <option>夕方</option>
+                    <option>夜</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             TIME
+        ====================== -->
+
+        <div class="section-title">
+            ◆ 希望時間
+        </div>
+
+        <div
+            class="time-grid"
+            id="timeGrid"
+        ></div>
+
+
+        <!-- =====================
+             BUILDING
+        ====================== -->
+
+        <div class="section-title">
+            ◆ 院内位置
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    棟
+                </label>
+
+                <select id="building">
+
+                    <option>A棟</option>
+                    <option>B棟</option>
+                    <option>C棟</option>
+                    <option>D棟</option>
+                    <option>新館</option>
+                    <option>旧館</option>
+                    <option>地下研究棟</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    階
+                </label>
+
+                <select id="floor">
+
+                    <option>1階</option>
+                    <option>2階</option>
+                    <option>3階</option>
+                    <option>4階</option>
+                    <option>5階</option>
+                    <option>6階</option>
+                    <option>7階</option>
+                    <option>地下1階</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    診察室
+                </label>
+
+                <select id="room">
+
+                    <option>101</option>
+                    <option>102</option>
+                    <option>203</option>
+                    <option>305</option>
+                    <option>404</option>
+                    <option>505</option>
+                    <option>777</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    受付方法
+                </label>
+
+                <select id="reception">
+
+                    <option>有人受付</option>
+                    <option>自動受付機</option>
+                    <option>スマホ受付</option>
+                    <option>受付ロボット</option>
+                    <option>空中ディスプレイ受付</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             ARRIVAL
+        ====================== -->
+
+        <div class="section-title">
+            ◆ 来院関連
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    来院手段
+                </label>
+
+                <select id="transport">
+
+                    <option>徒歩</option>
+                    <option>自転車</option>
+                    <option>電車</option>
+                    <option>バス</option>
+                    <option>タクシー</option>
+                    <option>自家用車</option>
+                    <option>ヘリコプター</option>
+                    <option>瞬間移動</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    駐車場
+                </label>
+
+                <select id="parking">
+
+                    <option>利用しない</option>
+                    <option>第1駐車場</option>
+                    <option>第2駐車場</option>
+                    <option>地下駐車場</option>
+                    <option>屋上駐車場</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    待合室
+                </label>
+
+                <select id="waitingRoom">
+
+                    <option>1号待合室</option>
+                    <option>2号待合室</option>
+                    <option>静かな待合室</option>
+                    <option>景色のいい待合室</option>
+                    <option>VIP待合室</option>
+                    <option>地下待合室</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    座席
+                </label>
+
+                <select id="seat">
+
+                    <option>窓側</option>
+                    <option>中央</option>
+                    <option>入口付近</option>
+                    <option>出口付近</option>
+                    <option>テレビの近く</option>
+                    <option>コンセント付近</option>
+                    <option>一番すみ</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             COMPLETELY USELESS
+        ====================== -->
+
+        <div class="section-title">
+            ◆ なぜか必要な項目
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    今日の気分
+                </label>
+
+                <select id="mood">
+
+                    <option>元気</option>
+                    <option>普通</option>
+                    <option>眠い</option>
+                    <option>緊張</option>
+                    <option>少し不安</option>
+                    <option>非常に元気</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    服装
+                </label>
+
+                <select id="clothes">
+
+                    <option>普段着</option>
+                    <option>スーツ</option>
+                    <option>制服</option>
+                    <option>ジャージ</option>
+                    <option>パジャマ</option>
+                    <option>正装</option>
+                    <option>宇宙服</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    飲み物
+                </label>
+
+                <select id="drink">
+
+                    <option>水</option>
+                    <option>お茶</option>
+                    <option>コーヒー</option>
+                    <option>ジュース</option>
+                    <option>何も飲まない</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    院内BGM
+                </label>
+
+                <select id="bgm">
+
+                    <option>無音</option>
+                    <option>ピアノ</option>
+                    <option>クラシック</option>
+                    <option>ジャズ</option>
+                    <option>環境音</option>
+                    <option>イルカ</option>
+                    <option>壮大な映画音楽</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    呼び出し方法
+                </label>
+
+                <select id="call">
+
+                    <option>館内放送</option>
+                    <option>モニター</option>
+                    <option>スマホ通知</option>
+                    <option>看護師</option>
+                    <option>ロボット</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    診察後
+                </label>
+
+                <select id="after">
+
+                    <option>帰宅</option>
+                    <option>仕事</option>
+                    <option>学校</option>
+                    <option>買い物</option>
+                    <option>映画</option>
+                    <option>旅行</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    帰宅方法
+                </label>
+
+                <select id="returnWay">
+
+                    <option>徒歩</option>
+                    <option>電車</option>
+                    <option>バス</option>
+                    <option>タクシー</option>
+                    <option>自転車</option>
+                    <option>ワープ</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    ラッキーカラー
+                </label>
+
+                <select id="lucky">
+
+                    <option>青</option>
+                    <option>赤</option>
+                    <option>黄色</option>
+                    <option>緑</option>
+                    <option>紫</option>
+                    <option>オレンジ</option>
+                    <option>銀</option>
+                    <option>虹色</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             CONSENT
+        ====================== -->
+
+        <div class="section-title">
+            ◆ 同意事項
+        </div>
+
+        <div class="consent">
+
+            <div class="consent-title">
+                予約前に以下を確認してください
+            </div>
+
+            <div class="consent-text">
+
+                このゲーム内予約システムでは、
+                大量の確認項目が表示されます。<br><br>
+
+                ・予約内容を確認したこと<br>
+                ・時間制限があることを理解したこと<br>
+                ・予約枠が埋まる可能性があること<br>
+                ・ゲーム内の架空病院であること<br>
+                ・必要以上の選択項目が存在すること<br>
+                ・謎のラッキーカラーを選択すること<br>
+                ・ロボットから呼び出される可能性があること<br>
+                ・予約ボタンを押した時点で最終判定されること
+
+            </div>
+
+
+            <label class="check">
+                <input
+                    type="checkbox"
+                    id="consent1"
+                >
+                予約内容を確認しました。
+            </label>
+
+            <label class="check">
+                <input
+                    type="checkbox"
+                    id="consent2"
+                >
+                ゲームのルールに同意します。
+            </label>
+
+            <label class="check">
+                <input
+                    type="checkbox"
+                    id="consent3"
+                >
+                制限時間があることに同意します。
+            </label>
+
+            <label class="check">
+                <input
+                    type="checkbox"
+                    id="consent4"
+                >
+                この大量の選択項目を最後まで入力します。
+            </label>
+
+        </div>
+
+
+        <!-- =====================
+             OTHER AGREEMENTS
+        ====================== -->
+
+        <div class="section-title">
+            ◆ その他確認
+        </div>
+
+        <div class="check-list">
+
+            <label class="check">
+                <input type="checkbox" id="extra1">
+                予約争奪戦に参加する
+            </label>
+
+            <label class="check">
+                <input type="checkbox" id="extra2">
+                予約システムを信頼する
+            </label>
+
+            <label class="check">
+                <input type="checkbox" id="extra3">
+                ロボット受付を許可する
+            </label>
+
+            <label class="check">
+                <input type="checkbox" id="extra4">
+                どう考えても不要な質問がある
+            </label>
+
+        </div>
+
+
+        <button
+            class="reserve"
+            id="reserveButton"
+        >
+            🔥 予約を確定する
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SIDE
+====================================================== -->
+
+<aside class="panel">
+
+    <div class="side">
+
+        <div class="side-title">
+            LIVE STATUS
+        </div>
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number red"
+                id="popularity"
+            >
+                98.7%
+            </div>
+
+            <p>
+                本日の予約枠消化率
+            </p>
+
+            <div class="queue">
+                <div
+                    class="queue-inner"
+                    id="queue"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number yellow"
+                id="remaining"
+            >
+                3
+            </div>
+
+            <p>
+                残り予約枠
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number"
+                id="people"
+            >
+                1284
+            </div>
+
+            <p>
+                現在の予約希望者
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number green"
+                id="multiplier"
+            >
+                38.7倍
+            </div>
+
+            <p>
+                現在の予約倍率
+            </p>
+
+        </div>
+
+
+        <div class="side-title">
+            SYSTEM LOG
+        </div>
+
+        <div
+            class="log-box"
+            id="logBox"
+        >
+
+            <div class="log-item">
+                [SYSTEM] 起動
+            </div>
+
+            <div class="log-item">
+                [SYSTEM] 予約サーバー接続
+            </div>
+
+            <div class="log-item">
+                [SYSTEM] 待機中
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</main>
+
+
+<!-- =====================================================
+     RESULT MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="modal"
+>
+
+    <div class="modal-card">
+
+        <div
+            class="modal-icon"
+            id="modalIcon"
+        >
+            🎉
+        </div>
+
+        <h2 id="modalTitle">
+            結果
+        </h2>
+
+        <p id="modalMessage"></p>
+
+        <div
+            class="result-box"
+            id="resultBox"
+        ></div>
+
+        <div
+            class="big-score"
+            id="finalScore"
+        >
+            0
+        </div>
+
+        <p>
+            YOUR SCORE
+        </p>
+
+        <button
+            class="close"
+            id="closeModal"
+        >
+            結果を見る
+        </button>
+
+        <button
+            class="restart"
+            id="restart"
+        >
+            もう一度挑戦する
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GAME STATE
+====================================================== */
+
+const GAME_TIME = 120;
+
+let timeLeft = GAME_TIME;
+let timer = null;
+
+let started = false;
+let finished = false;
+
+let selectedTime = "";
+
+let score = 0;
+
+let changedCount = 0;
+let consentCount = 0;
+let checkCount = 0;
+
+
+/* =====================================================
+   SECURITY CODE
+====================================================== */
+
+let securityCode = "";
+
+function generateSecurityCode() {
+
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    securityCode = "";
+
+    for(let i = 0; i < 6; i++) {
+
+        securityCode +=
+            chars[
+                Math.floor(
+                    Math.random() * chars.length
+                )
+            ];
+
+    }
+
+    document.getElementById(
+        "securityCode"
+    ).textContent = securityCode;
+
+}
+
+generateSecurityCode();
+
+
+/* =====================================================
+   SECURITY AUTH
+====================================================== */
+
+document
+    .getElementById("securityButton")
+    .addEventListener(
+        "click",
+        verifySecurity
+    );
+
+
+document
+    .getElementById("securityInput")
+    .addEventListener(
+        "keydown",
+        e => {
+
+            if(e.key === "Enter") {
+                verifySecurity();
+            }
+
+        }
+    );
+
+
+function verifySecurity() {
+
+    const input =
+        document.getElementById(
+            "securityInput"
+        ).value
+        .trim()
+        .toUpperCase();
+
+
+    if(input === securityCode) {
+
+        document
+            .getElementById(
+                "securityScreen"
+            )
+            .classList.add("hidden");
+
+        addLog(
+            "[SECURITY] 認証成功",
+            true
+        );
+
+        startGame();
+
+    } else {
+
+        score -= 10;
+
+        document
+            .getElementById("securityError")
+            .textContent =
+                "セキュリティコードが違います。";
+
+        document
+            .querySelector(".security-card")
+            .classList.add("shake");
+
+        setTimeout(() => {
+
+            document
+                .querySelector(".security-card")
+                .classList.remove("shake");
+
+        }, 400);
+
+        addLog(
+            "[SECURITY] 認証失敗"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   START GAME
+====================================================== */
+
+function startGame() {
+
+    if(started) return;
+
+    started = true;
+
+    startTimer();
+
+    addLog(
+        "[SYSTEM] ゲーム開始"
+    );
+
+}
+
+
+/* =====================================================
+   TIMER
+====================================================== */
+
+function startTimer() {
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        updateTimer();
+
+        randomHospitalStatus();
+
+        if(timeLeft <= 0) {
+
+            clearInterval(timer);
+
+            timeLeft = 0;
+
+            finishGame("timeout");
+
+        }
+
+    }, 1000);
+
+}
+
+
+function updateTimer() {
+
+    const min =
+        Math.floor(
+            timeLeft / 60
+        );
+
+    const sec =
+        timeLeft % 60;
+
+    const text =
+        `${String(min).padStart(2,"0")}:` +
+        `${String(sec).padStart(2,"0")}`;
+
+    const timerElement =
+        document.getElementById("timer");
+
+    timerElement.textContent = text;
+
+    if(timeLeft <= 20) {
+
+        timerElement
+            .classList.add("danger");
+
+    } else {
+
+        timerElement
+            .classList.remove("danger");
+
+    }
+
+}
+
+
+/* =====================================================
+   TIME SLOTS
+====================================================== */
+
+const times = [
+    "08:00",
+    "08:30",
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+    "18:30",
+    "19:00",
+    "19:30"
+];
+
+
+function createTimeSlots() {
+
+    const grid =
+        document.getElementById(
+            "timeGrid"
+        );
+
+    grid.innerHTML = "";
+
+    times.forEach(time => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "time";
+
+        const isFull =
+            Math.random() < .62;
+
+
+        if(isFull) {
+
+            button.classList.add("full");
+
+            button.innerHTML =
+                `${time}<small>満席</small>`;
+
+        } else {
+
+            const remaining =
+                Math.floor(
+                    Math.random() * 3
+                ) + 1;
+
+            button.innerHTML =
+                `${time}<small>残り${remaining}枠</small>`;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if(finished) return;
+
+                    document
+                        .querySelectorAll(".time")
+                        .forEach(el =>
+                            el.classList.remove(
+                                "selected"
+                            )
+                        );
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+                    selectedTime = time;
+
+                    score += 5;
+
+                    addLog(
+                        `[USER] 時間 ${time} を選択`
+                    );
+
+                }
+            );
+
+        }
+
+        grid.appendChild(button);
+
+    });
+
+}
+
+createTimeSlots();
+
+
+/* =====================================================
+   SELECT EVENTS
+====================================================== */
+
+document
+    .querySelectorAll("select")
+    .forEach(select => {
+
+        select.addEventListener(
+            "change",
+            () => {
+
+                if(finished) return;
+
+                changedCount++;
+
+                score += 2;
+
+                addLog(
+                    `[USER] ${select.previousElementSibling.textContent} → ${select.value}`
+                );
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   CHECKBOX EVENTS
+====================================================== */
+
+document
+    .querySelectorAll(
+        '.check input'
+    )
+    .forEach(box => {
+
+        box.addEventListener(
+            "change",
+            () => {
+
+                if(finished) return;
+
+                checkCount++;
+
+                if(box.checked) {
+
+                    score += 3;
+
+                    addLog(
+                        "[USER] 確認事項をチェック"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   CONSENT COUNT
+====================================================== */
+
+[
+    "consent1",
+    "consent2",
+    "consent3",
+    "consent4"
+].forEach(id => {
+
+    document
+        .getElementById(id)
+        .addEventListener(
+            "change",
+            e => {
+
+                if(e.target.checked) {
+
+                    consentCount++;
+
+                } else {
+
+                    consentCount--;
+
+                }
+
+            }
+        );
+
+});
+
+
+/* =====================================================
+   LOG
+====================================================== */
+
+function addLog(text, good=false) {
+
+    const box =
+        document.getElementById(
+            "logBox"
+        );
+
+    const item =
+        document.createElement("div");
+
+    item.className =
+        "log-item" +
+        (good ? " good" : "");
+
+    const now =
+        new Date().toLocaleTimeString(
+            "ja-JP",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+    item.textContent =
+        `[${now}] ${text}`;
+
+    box.prepend(item);
+
+}
+
+
+/* =====================================================
+   RANDOM HOSPITAL STATUS
+====================================================== */
+
+function randomHospitalStatus() {
+
+    const people =
+        Math.floor(
+            1000 +
+            Math.random() * 90000
+        );
+
+    const multiplier =
+        (
+            20 +
+            Math.random() * 30
+        ).toFixed(1);
+
+    document.getElementById(
+        "people"
+    ).textContent =
+        people.toLocaleString();
+
+    document.getElementById(
+        "multiplier"
+    ).textContent =
+        multiplier + "倍";
+
+}
+
+
+/* =====================================================
+   RESERVATION
+====================================================== */
+
+document
+    .getElementById(
+        "reserveButton"
+    )
+    .addEventListener(
+        "click",
+        tryReservation
+    );
+
+
+function tryReservation() {
+
+    if(finished) return;
+
+
+    /* 時間 */
+    if(!selectedTime) {
+
+        failMessage(
+            "まず希望時間を選択してください。"
+        );
+
+        return;
+    }
+
+
+    /* 同意4つ */
+    const consents = [
+        "consent1",
+        "consent2",
+        "consent3",
+        "consent4"
+    ];
+
+    const allConsented =
+        consents.every(
+            id =>
+                document.getElementById(id).checked
+        );
+
+
+    if(!allConsented) {
+
+        failMessage(
+            "同意事項をすべて確認してください。"
+        );
+
+        return;
+    }
+
+
+    /* 余分な確認 */
+    const extra = [
+        "extra1",
+        "extra2",
+        "extra3",
+        "extra4"
+    ];
+
+    const extraChecked =
+        extra.filter(
+            id =>
+                document.getElementById(id).checked
+        ).length;
+
+
+    /* スコア加算 */
+
+    score +=
+        consentCount * 5;
+
+    score +=
+        extraChecked * 4;
+
+
+    /* 残り時間ボーナス */
+
+    score +=
+        timeLeft * 2;
+
+
+    addLog(
+        "[SYSTEM] 予約内容を送信..."
+    );
+
+
+    /* 処理演出 */
+
+    const button =
+        document.getElementById(
+            "reserveButton"
+        );
+
+    button.textContent =
+        "⏳ 予約サーバー接続中...";
+
+    button.disabled = true;
+
+
+    setTimeout(() => {
+
+        const success =
+            Math.random() > 0.28;
+
+
+        if(success) {
+
+            addLog(
+                "[SYSTEM] 予約枠を確保しました。",
+                true
+            );
+
+            finishGame("success");
+
+        } else {
+
+            addLog(
+                "[SYSTEM] 他の利用者に予約枠を取られました。"
+            );
+
+            finishGame("failed");
+
+        }
+
+    }, 900);
+
+}
+
+
+/* =====================================================
+   FAIL MESSAGE
+====================================================== */
+
+function failMessage(text) {
+
+    addLog(
+        "[ERROR] " + text
+    );
+
+    alert(text);
+
+}
+
+
+/* =====================================================
+   FINAL GAME
+====================================================== */
+
+function finishGame(type) {
+
+    if(finished) return;
+
+    finished = true;
+
+    clearInterval(timer);
+
+    const department =
+        document.getElementById(
+            "department"
+        ).value;
+
+    const doctor =
+        document.getElementById(
+            "doctor"
+        ).value;
+
+    const date =
+        document.getElementById(
+            "date"
+        ).value;
+
+    const building =
+        document.getElementById(
+            "building"
+        ).value;
+
+    const floor =
+        document.getElementById(
+            "floor"
+        ).value;
+
+
+    /* 時間ボーナス */
+
+    if(timeLeft >= 90) {
+        score += 100;
+    } else if(timeLeft >= 60) {
+        score += 60;
+    } else if(timeLeft >= 30) {
+        score += 30;
+    }
+
+
+    /* 大量入力ボーナス */
+
+    if(changedCount >= 15) {
+        score += 50;
+    }
+
+    if(checkCount >= 8) {
+        score += 50;
+    }
+
+
+    /* 失敗ペナルティ */
+
+    if(type === "failed") {
+        score -= 80;
+    }
+
+    if(type === "timeout") {
+        score -= 150;
+    }
+
+
+    /* マイナス防止 */
+
+    score =
+        Math.max(
+            0,
+            score
+        );
+
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+    const icon =
+        document.getElementById(
+            "modalIcon"
+        );
+
+    const title =
+        document.getElementById(
+            "modalTitle"
+        );
+
+    const message =
+        document.getElementById(
+            "modalMessage"
+        );
+
+
+    if(type === "success") {
+
+        icon.textContent =
+            "🎉";
+
+        title.textContent =
+            "予約成功！";
+
+        message.textContent =
+            "奇跡的に予約枠を確保しました。";
+
+    }
+
+    else if(type === "failed") {
+
+        icon.textContent =
+            "💥";
+
+        title.textContent =
+            "予約失敗";
+
+        message.textContent =
+            "予約確定直前に他の利用者に抜かれました。";
+
+    }
+
+    else {
+
+        icon.textContent =
+            "⏰";
+
+        title.textContent =
+            "時間切れ";
+
+        message.textContent =
+            "制限時間内に予約を完了できませんでした。";
+
+    }
+
+
+    document.getElementById(
+        "resultBox"
+    ).innerHTML = `
+
+        <strong>最終結果</strong>
+        <br><br>
+
+        診療科：
+        ${department}
+
+        <br>
+
+        担当：
+        ${doctor}
+
+        <br>
+
+        受診日：
+        ${date}
+
+        <br>
+
+        時間：
+        ${selectedTime || "未選択"}
+
+        <br>
+
+        場所：
+        ${building}
+        ${floor}
+
+        <br>
+
+        残り時間：
+        ${formatTime(timeLeft)}
+
+        <br>
+
+        選択回数：
+        ${changedCount}
+
+        <br>
+
+        同意数：
+        ${consentCount}
+
+        <br>
+
+        判定：
+        ${
+            type === "success"
+                ? "予約確保"
+                : type === "failed"
+                    ? "予約枠消失"
+                    : "時間切れ"
+        }
+
+    `;
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
+        score;
+
+
+    modal.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   TIME FORMAT
+====================================================== */
+
+function formatTime(seconds) {
+
+    const min =
+        Math.floor(
+            seconds / 60
+        );
+
+    const sec =
+        seconds % 60;
+
+    return (
+        String(min).padStart(2,"0")
+        + ":"
+        +
+        String(sec).padStart(2,"0")
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE
+====================================================== */
+
+document
+    .getElementById(
+        "closeModal"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById("modal")
+                .classList.remove(
+                    "show"
+                );
+
+        }
+    );
+
+
+/* =====================================================
+   RESTART
+====================================================== */
+
+document
+    .getElementById(
+        "restart"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            location.reload();
+
+        }
+    );
+
+
+/* =====================================================
+   INITIAL DISPLAY
+====================================================== */
+
+updateTimer();
+
+</script>
+
+</body>
+</html>
