@@ -3,1060 +3,1115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>超人気病院 予約ゲーム</title>
+<title>NEXORA X7 予約受付</title>
 
 <style>
-:root {
-    --bg: #061018;
-    --panel: #101a24;
-    --panel2: #0b131b;
-    --line: #293b4b;
-    --text: #edf7ff;
-    --sub: #8ea1b2;
-    --blue: #27d8ff;
-    --blue2: #487cff;
-    --green: #29e58b;
-    --red: #ff5574;
-    --yellow: #ffd45c;
-    --orange: #ff9d42;
+:root{
+    --bg:#f3f5f7;
+    --white:#fff;
+    --text:#18212a;
+    --muted:#687681;
+    --line:#d9e0e5;
+    --primary:#246bce;
+    --primary-dark:#1852a4;
+    --light:#eef5ff;
+    --green:#168657;
+    --red:#d93f52;
+    --yellow:#a66a00;
+    --shadow:0 8px 30px rgba(20,40,60,.08);
 }
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
+html,body{
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
 
     font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
         "Yu Gothic",
         "Hiragino Kaku Gothic ProN",
-        system-ui,
         sans-serif;
-
-    color: var(--text);
-
-    background:
-        radial-gradient(
-            circle at top left,
-            rgba(39,216,255,.10),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            rgba(72,124,255,.12),
-            transparent 35%
-        ),
-        var(--bg);
 }
 
-/* ==============================
-   HEADER
-============================== */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-
-    background: rgba(5,10,15,.92);
-    backdrop-filter: blur(12px);
-
-    border-bottom: 1px solid var(--line);
+button,
+input,
+select{
+    font:inherit;
 }
 
-.header-inner {
-    max-width: 1200px;
-    margin: auto;
-    padding: 14px 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+button{
+    cursor:pointer;
 }
 
-.logo {
-    color: var(--blue);
-    font-weight: 900;
-    letter-spacing: 2px;
+/* =========================================
+   TOP
+========================================= */
+
+.topbar{
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
-.hud {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.topbar-inner{
+    width:min(1150px,94%);
+    min-height:68px;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
 }
 
-.timer {
-    font-family: monospace;
-    color: var(--yellow);
-    font-weight: bold;
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.timer.danger {
-    color: var(--red);
-    animation: blink .5s infinite alternate;
-}
+.logo{
+    width:42px;
+    height:42px;
+    border-radius:10px;
 
-.score {
-    color: var(--sub);
-    font-size: 13px;
-}
+    display:grid;
+    place-items:center;
 
-.score strong {
-    color: white;
-}
-
-@keyframes blink {
-    from { opacity: 1; }
-    to { opacity: .35; }
-}
-
-/* ==============================
-   SECURITY SCREEN
-============================== */
-
-.security-screen {
-    position: fixed;
-    inset: 0;
-
-    z-index: 1000;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 20px;
-
-    background:
-        radial-gradient(
-            circle,
-            #10232d,
-            #02060a 70%
-        );
-}
-
-.security-screen.hidden {
-    display: none;
-}
-
-.security-card {
-    width: min(95vw, 480px);
-
-    padding: 32px;
-
-    border: 1px solid #355063;
-    border-radius: 20px;
-
-    background: rgba(11,20,29,.97);
-
-    box-shadow:
-        0 30px 100px #000;
-
-    text-align: center;
-}
-
-.security-icon {
-    font-size: 52px;
-}
-
-.security-card h1 {
-    margin: 10px 0;
-}
-
-.security-card p {
-    color: var(--sub);
-    font-size: 13px;
-    line-height: 1.8;
-}
-
-.security-code {
-    margin: 25px 0;
-
-    padding: 18px;
-
-    background: #05090e;
-
-    border:
-        1px dashed
-        #5b7385;
-
-    border-radius: 12px;
-
-    font-family:
-        "Courier New",
-        monospace;
-
-    font-size: 36px;
-    letter-spacing: 9px;
-
-    color: var(--blue);
-
-    user-select: none;
-
-    text-shadow:
-        0 0 20px
-        rgba(39,216,255,.35);
-}
-
-.security-input {
-    width: 100%;
-
-    padding: 14px;
-
-    background: #071019;
-
-    color: white;
-
-    border:
-        1px solid
-        #385062;
-
-    border-radius: 10px;
-
-    font-size: 18px;
-
-    text-align: center;
-
-    letter-spacing: 4px;
-
-    outline: none;
-}
-
-.security-input:focus {
-    border-color: var(--blue);
-}
-
-.security-button {
-    width: 100%;
-
-    margin-top: 12px;
-
-    padding: 14px;
-
-    border: 0;
-
-    border-radius: 11px;
-
+    color:#fff;
     background:
         linear-gradient(
             135deg,
-            var(--blue),
-            var(--blue2)
+            #246bce,
+            #4c8ff5
         );
 
-    color: white;
-
-    font-weight: bold;
-
-    cursor: pointer;
+    font-size:20px;
+    font-weight:900;
 }
 
-.security-error {
-    min-height: 24px;
-
-    margin-top: 12px;
-
-    color: var(--red);
-
-    font-size: 13px;
+.brand-title{
+    margin:0;
+    font-size:18px;
 }
 
-/* ==============================
-   MAIN
-============================== */
-
-.container {
-    max-width: 1200px;
-
-    margin: 25px auto;
-
-    padding:
-        0 20px
-        60px;
-
-    display: grid;
-
-    grid-template-columns:
-        minmax(0,1fr)
-        350px;
-
-    gap: 20px;
+.brand-sub{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:2px;
 }
 
-@media(max-width:900px) {
-    .container {
-        grid-template-columns: 1fr;
+.hud{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.timer-label{
+    color:var(--muted);
+    font-size:10px;
+}
+
+#timer{
+    display:inline-block;
+    min-width:67px;
+
+    padding:7px 10px;
+
+    text-align:center;
+
+    border-radius:7px;
+
+    background:#edf2f5;
+
+    font-family:monospace;
+    font-size:19px;
+    font-weight:800;
+}
+
+#timer.danger{
+    color:var(--red);
+    background:#fff0f2;
+    animation:blink .55s infinite alternate;
+}
+
+.score-hud{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.score-hud strong{
+    color:var(--text);
+}
+
+@keyframes blink{
+    from{opacity:1}
+    to{opacity:.45}
+}
+
+/* =========================================
+   SECURITY
+========================================= */
+
+.security{
+    position:fixed;
+    inset:0;
+
+    z-index:1000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b4f92,
+            #0c263f
+        );
+}
+
+.security.hidden{
+    display:none;
+}
+
+.security-card{
+    width:min(470px,95vw);
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.30);
+}
+
+.security-mark{
+    width:64px;
+    height:64px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    background:#eef5ff;
+
+    font-size:30px;
+}
+
+.security-card h2{
+    margin:13px 0 7px;
+    font-size:22px;
+}
+
+.security-card p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.8;
+    margin:0;
+}
+
+.security-code{
+    margin:22px 0;
+
+    padding:18px;
+
+    border:1px dashed #aabac8;
+    border-radius:9px;
+
+    background:#f7f9fa;
+
+    color:var(--primary-dark);
+
+    font-family:monospace;
+
+    font-size:31px;
+    letter-spacing:8px;
+    user-select:none;
+}
+
+.security-input{
+    width:100%;
+
+    padding:13px;
+
+    text-align:center;
+
+    border:1px solid #bbc8d0;
+    border-radius:8px;
+
+    font-family:monospace;
+    font-size:18px;
+    letter-spacing:4px;
+
+    outline:none;
+}
+
+.security-input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(36,107,206,.1);
+}
+
+.security-btn{
+    width:100%;
+
+    margin-top:10px;
+
+    padding:14px;
+
+    border:0;
+    border-radius:8px;
+
+    background:var(--primary);
+
+    color:white;
+    font-weight:700;
+}
+
+.security-error{
+    min-height:20px;
+
+    margin-top:9px;
+
+    color:var(--red);
+
+    font-size:11px;
+}
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page{
+    width:min(1150px,94%);
+    margin:25px auto 60px;
+}
+
+.breadcrumb{
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 295px;
+    gap:20px;
+}
+
+@media(max-width:900px){
+    .grid{
+        grid-template-columns:1fr;
     }
 }
 
-/* ==============================
-   PANEL
-============================== */
+/* =========================================
+   CARD
+========================================= */
 
-.panel {
-    background:
-        rgba(16,26,36,.96);
+.card{
+    background:var(--white);
 
-    border:
-        1px solid
-        var(--line);
+    border:1px solid var(--line);
+    border-radius:11px;
 
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,.35);
+    box-shadow:var(--shadow);
 }
 
-.panel-header {
-    padding: 25px;
-
-    border-bottom:
-        1px solid
-        var(--line);
+.product{
+    padding:22px 24px;
+    border-bottom:1px solid var(--line);
 }
 
-.panel-header h1 {
-    margin: 0;
-
-    font-size: 28px;
+.product-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:25px;
 }
 
-.panel-header p {
-    color: var(--sub);
-
-    font-size: 13px;
-
-    line-height: 1.8;
-
-    margin: 8px 0 0;
+@media(max-width:650px){
+    .product-flex{
+        flex-direction:column;
+        align-items:flex-start;
+    }
 }
 
-.live {
-    margin-top: 15px;
-
-    padding: 12px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255,85,116,.06);
-
-    border:
-        1px solid
-        rgba(255,85,116,.25);
-
-    color:
-        #ffb1c1;
-
-    font-size: 12px;
+.product-name{
+    font-size:27px;
+    font-weight:800;
+    margin:0;
 }
 
-/* ==============================
+.product-tag{
+    display:inline-block;
+
+    margin-top:8px;
+
+    padding:5px 8px;
+
+    background:#eef5ff;
+    color:#205cae;
+
+    border-radius:5px;
+
+    font-size:10px;
+    font-weight:700;
+}
+
+.price{
+    text-align:right;
+}
+
+.price small{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.price strong{
+    font-size:26px;
+}
+
+/* =========================================
+   STEPS
+========================================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+
+    border-bottom:1px solid var(--line);
+
+    overflow-x:auto;
+}
+
+.step{
+    min-width:100px;
+
+    padding:13px 8px;
+
+    text-align:center;
+
+    color:#89959d;
+
+    font-size:10px;
+
+    position:relative;
+}
+
+.step.active{
+    color:var(--primary);
+    font-weight:700;
+}
+
+.step.done{
+    color:var(--green);
+}
+
+.step.active::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:3px;
+
+    background:var(--primary);
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.content{
+    padding:24px;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
+}
+
+.title{
+    margin:0;
+    font-size:20px;
+}
+
+.desc{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.8;
+    margin:6px 0 20px;
+}
+
+.notice{
+    padding:13px 15px;
+
+    border-radius:8px;
+
+    font-size:11px;
+    line-height:1.7;
+
+    margin-bottom:16px;
+}
+
+.notice.info{
+    color:#245675;
+    background:#eef7fb;
+    border:1px solid #cfe5ef;
+}
+
+.notice.warn{
+    color:#7a5609;
+    background:#fff8e9;
+    border:1px solid #ebdbad;
+}
+
+/* =========================================
    FORM
-============================== */
+========================================= */
 
-.form {
-    padding: 24px;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:15px;
 }
 
-.section-title {
-    margin:
-        27px 0
-        14px;
-
-    padding-left: 10px;
-
-    border-left:
-        3px solid
-        var(--blue);
-
-    color:
-        var(--blue);
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
-}
-
-.section-title:first-child {
-    margin-top: 0;
-}
-
-.form-grid {
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap: 14px;
-}
-
-@media(max-width:600px) {
-    .form-grid {
-        grid-template-columns: 1fr;
+@media(max-width:650px){
+    .form-grid{
+        grid-template-columns:1fr;
     }
 }
 
-.field label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    color:
-        #b0c0ce;
-
-    font-size: 12px;
-}
-
-.field select,
-.field input {
-    width: 100%;
-
-    padding:
-        12px 13px;
-
-    border:
-        1px solid
-        #304453;
-
-    border-radius: 10px;
-
-    background:
-        #071019;
-
-    color:
-        white;
-
-    outline: none;
-
-    font-size: 14px;
-}
-
-.field select:focus,
-.field input:focus {
-    border-color: var(--blue);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(39,216,255,.08);
-}
-
-/* ==============================
-   TIMES
-============================== */
-
-.time-grid {
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap: 9px;
-}
-
-@media(max-width:600px) {
-    .time-grid {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-}
-
-.time {
-    padding: 12px 5px;
-
-    border:
-        1px solid
-        #2b3d4d;
-
-    border-radius: 10px;
-
-    background:
-        #09131c;
-
-    color:
-        #dfeaf2;
-
-    cursor: pointer;
-
-    transition: .12s;
-}
-
-.time:hover {
-    border-color:
-        var(--blue);
-}
-
-.time.selected {
-    background:
-        #073947;
-
-    border-color:
-        var(--blue);
-
-    color:
-        var(--blue);
-}
-
-.time.full {
-    background:
-        #161d24;
-
-    color:
-        #596875;
-
-    cursor:
-        not-allowed;
-
-    text-decoration:
-        line-through;
-}
-
-.time small {
+.field label{
     display:block;
 
-    margin-top:
-        3px;
+    margin-bottom:6px;
 
-    font-size:
-        9px;
+    font-size:11px;
+    font-weight:700;
 }
 
-/* ==============================
-   CHECKBOX
-============================== */
-
-.check-list {
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap: 10px;
+.req{
+    color:var(--red);
+    margin-left:3px;
 }
 
-@media(max-width:600px) {
-    .check-list {
-        grid-template-columns:
-            1fr;
+.field input,
+.field select{
+    width:100%;
+
+    padding:11px 12px;
+
+    border:1px solid #c8d2d8;
+    border-radius:7px;
+
+    background:#fff;
+    color:var(--text);
+
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(36,107,206,.08);
+}
+
+/* =========================================
+   PRODUCT OPTIONS
+========================================= */
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px;
+}
+
+@media(max-width:650px){
+    .options{
+        grid-template-columns:1fr;
     }
 }
 
-.check {
-    display:
-        flex;
+.option{
+    position:relative;
 
-    align-items:
-        flex-start;
+    padding:14px;
 
-    gap: 8px;
+    border:1px solid #d1d9de;
+    border-radius:8px;
 
-    padding: 12px;
+    background:#fff;
 
-    border:
-        1px solid
-        #2a3b49;
-
-    background:
-        #09131c;
-
-    border-radius:
-        10px;
-
-    color:
-        #cbd8e2;
-
-    font-size:
-        12px;
-
-    cursor:
-        pointer;
-
-    line-height:
-        1.5;
+    transition:.12s;
 }
 
-/* ==============================
-   CONSENT
-============================== */
-
-.consent {
-    margin-top: 15px;
-
-    padding: 16px;
-
-    border:
-        1px solid
-        #3a4b58;
-
-    background:
-        #081119;
-
-    border-radius:
-        12px;
+.option:hover{
+    border-color:#9db0bc;
 }
 
-.consent-title {
-    color:
-        var(--yellow);
-
-    font-weight:
-        bold;
-
-    font-size:
-        12px;
-
-    margin-bottom:
-        8px;
+.option.selected{
+    border-color:var(--primary);
+    background:#eef5ff;
 }
 
-.consent-text {
-    color:
-        #91a4b4;
-
-    font-size:
-        11px;
-
-    line-height:
-        1.8;
-
-    max-height:
-        120px;
-
-    overflow:
-        auto;
-
-    margin-bottom:
-        12px;
+.option input{
+    position:absolute;
+    opacity:0;
 }
 
-/* ==============================
-   BUTTON
-============================== */
-
-.reserve {
-    width: 100%;
-
-    margin-top: 25px;
-
-    padding: 17px;
-
-    border: 0;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--blue),
-            var(--blue2)
-        );
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 12px 35px
-        rgba(30,150,255,.18);
+.option strong{
+    display:block;
+    font-size:13px;
+    margin-bottom:4px;
 }
 
-.reserve:hover {
-    filter: brightness(1.1);
+.option small{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
 }
 
-.reserve:active {
-    transform: scale(.98);
+/* =========================================
+   SHIPPING
+========================================= */
+
+.shipping{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
 }
 
-/* ==============================
+@media(max-width:650px){
+    .shipping{
+        grid-template-columns:1fr;
+    }
+}
+
+.shipping-card{
+    padding:15px;
+
+    border:1px solid #d0d9df;
+
+    border-radius:8px;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+.shipping-card.selected{
+    border-color:var(--primary);
+    background:#eef5ff;
+}
+
+.shipping-card strong{
+    display:block;
+    margin-bottom:4px;
+}
+
+.shipping-card small{
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* =========================================
+   AGREEMENT
+========================================= */
+
+.agreement{
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.agreement-text{
+    height:180px;
+    overflow:auto;
+
+    padding:15px;
+
+    background:#f8fafb;
+
+    color:#586772;
+
+    font-size:10px;
+    line-height:1.9;
+}
+
+.check{
+    display:flex;
+    gap:8px;
+
+    padding:11px 13px;
+
+    border-top:1px solid var(--line);
+
+    font-size:11px;
+
+    line-height:1.6;
+}
+
+.check input{
+    margin-top:3px;
+    accent-color:var(--primary);
+}
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.summary{
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.summary-row{
+    display:grid;
+    grid-template-columns:150px 1fr;
+
+    border-bottom:1px solid var(--line);
+}
+
+.summary-row:last-child{
+    border-bottom:0;
+}
+
+.summary-label{
+    background:#f7f9fa;
+    padding:10px 12px;
+
+    color:var(--muted);
+    font-size:10px;
+}
+
+.summary-value{
+    padding:10px 12px;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.actions{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+
+    margin-top:22px;
+}
+
+.btn{
+    border:1px solid #c7d1d7;
+
+    border-radius:7px;
+
+    padding:11px 20px;
+
+    background:#fff;
+
+    color:#3d4b54;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.btn.primary{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+}
+
+.btn.primary:hover{
+    background:var(--primary-dark);
+}
+
+.btn.success{
+    background:var(--green);
+    border-color:var(--green);
+    color:#fff;
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+/* =========================================
    SIDE
-============================== */
+========================================= */
 
-.side {
-    padding: 20px;
+.side-card{
+    padding:18px;
 }
 
-.side-title {
-    color:
-        var(--sub);
-
-    letter-spacing:
-        2px;
-
-    font-size:
-        11px;
-
-    margin-bottom:
-        11px;
+.side-title{
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:14px;
 }
 
-.stat-card {
-    padding:
-        17px;
+.status-row{
+    padding:11px 0;
 
-    background:
-        #081119;
-
-    border:
-        1px solid
-        #293c4b;
-
-    border-radius:
-        13px;
-
-    margin-bottom:
-        12px;
+    border-bottom:1px solid #edf0f2;
 }
 
-.stat-number {
-    font-size:
-        34px;
-
-    font-weight:
-        900;
+.status-row:last-child{
+    border-bottom:0;
 }
 
-.red {
-    color:
-        var(--red);
+.status-label{
+    color:var(--muted);
+    font-size:9px;
 }
 
-.yellow {
-    color:
-        var(--yellow);
+.status-value{
+    margin-top:3px;
+
+    font-size:15px;
+    font-weight:800;
 }
 
-.green {
-    color:
-        var(--green);
+.inventory{
+    color:var(--red);
 }
 
-.stat-card p {
-    margin:
-        5px 0 0;
+.inventory-bar{
+    height:8px;
 
-    color:
-        var(--sub);
+    background:#edf0f2;
 
-    font-size:
-        11px;
+    border-radius:99px;
 
-    line-height:
-        1.7;
+    overflow:hidden;
+
+    margin-top:7px;
 }
 
-.queue {
-    height:
-        10px;
+.inventory-inner{
+    height:100%;
 
-    margin-top:
-        12px;
-
-    background:
-        #1b2731;
-
-    border-radius:
-        99px;
-
-    overflow:
-        hidden;
-}
-
-.queue-inner {
-    height:
-        100%;
-
-    width:
-        96%;
+    width:93%;
 
     background:
         linear-gradient(
             90deg,
-            var(--yellow),
-            var(--red)
+            #f0bb4b,
+            #d94755
         );
 }
 
-/* ==============================
-   LOG
-============================== */
+/* =========================================
+   ACTIVITY
+========================================= */
 
-.log-box {
-    max-height:
-        320px;
+.activity{
+    max-height:300px;
+    overflow:auto;
+}
 
-    overflow:
-        auto;
+.activity-item{
+    padding:7px 0;
 
-    background:
-        #060c12;
+    border-bottom:1px solid #edf0f2;
+
+    color:#73808a;
+
+    font-family:monospace;
+
+    font-size:9px;
+
+    line-height:1.5;
+}
+
+.activity-item.good{
+    color:var(--green);
+}
+
+.activity-item.alert{
+    color:var(--red);
+}
+
+/* =========================================
+   RUSH ALERT
+========================================= */
+
+.rush{
+    position:fixed;
+
+    top:82px;
+    left:50%;
+
+    width:min(650px,93vw);
+
+    transform:
+        translate(-50%,-25px);
+
+    opacity:0;
+    pointer-events:none;
+
+    z-index:700;
+
+    padding:15px 18px;
+
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+
+    background:#fff4f5;
 
     border:
-        1px solid
-        #253540;
+        1px solid #e8a5b0;
 
-    border-radius:
-        10px;
-}
+    border-left:
+        5px solid var(--red);
 
-.log-item {
-    padding:
-        9px 11px;
-
-    border-bottom:
-        1px solid
-        #16242e;
-
-    color:
-        #8ea2b2;
-
-    font-family:
-        monospace;
-
-    font-size:
-        10px;
-}
-
-.log-item.good {
-    color:
-        var(--green);
-}
-
-/* ==============================
-   MODAL
-============================== */
-
-.modal {
-    position:
-        fixed;
-
-    inset:
-        0;
-
-    z-index:
-        500;
-
-    display:
-        none;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    padding:
-        20px;
-
-    background:
-        rgba(0,0,0,.84);
-
-    backdrop-filter:
-        blur(10px);
-}
-
-.modal.show {
-    display:
-        flex;
-}
-
-.modal-card {
-    width:
-        min(95vw,520px);
-
-    padding:
-        30px;
-
-    background:
-        #101a23;
-
-    border:
-        1px solid
-        #415767;
-
-    border-radius:
-        20px;
-
-    text-align:
-        center;
+    border-radius:9px;
 
     box-shadow:
-        0 30px 100px
-        #000;
+        0 15px 45px rgba(80,20,30,.17);
+
+    transition:.25s;
 }
 
-.modal-icon {
-    font-size:
-        55px;
+.rush.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
 }
 
-.modal-card h2 {
-    margin:
-        10px 0;
+.rush-icon{
+    font-size:25px;
 }
 
-.modal-card p {
-    color:
-        #a6b6c4;
-
-    font-size:
-        13px;
-
-    line-height:
-        1.8;
+.rush strong{
+    color:#9b2939;
+    font-size:13px;
 }
 
-.result-box {
-    margin:
-        20px 0;
+.rush p{
+    margin:4px 0 0;
 
-    padding:
-        20px;
+    color:#77414a;
 
-    border:
-        1px dashed
-        #526977;
-
-    background:
-        #071018;
-
-    border-radius:
-        12px;
-
-    text-align:
-        left;
-
-    font-family:
-        monospace;
-
-    line-height:
-        1.9;
-
-    font-size:
-        12px;
+    font-size:10px;
+    line-height:1.6;
 }
 
-.big-score {
-    margin:
-        18px 0;
+/* =========================================
+   RESULT
+========================================= */
 
-    font-size:
-        46px;
+.modal{
+    position:fixed;
+    inset:0;
 
-    font-weight:
-        900;
+    z-index:1300;
 
-    color:
-        var(--blue);
+    display:none;
 
-    text-shadow:
-        0 0 22px
-        rgba(39,216,255,.3);
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:rgba(10,18,25,.72);
 }
 
-.close {
-    width:
-        100%;
-
-    padding:
-        14px;
-
-    border:
-        0;
-
-    border-radius:
-        11px;
-
-    background:
-        var(--blue);
-
-    color:
-        #001119;
-
-    font-weight:
-        bold;
-
-    cursor:
-        pointer;
+.modal.show{
+    display:flex;
 }
 
-.restart {
-    width:
-        100%;
+.result{
+    width:min(620px,95vw);
+    max-height:90vh;
+    overflow:auto;
 
-    margin-top:
-        10px;
+    background:#fff;
 
-    padding:
-        11px;
+    border-radius:14px;
 
-    background:
-        transparent;
+    padding:28px;
 
-    color:
-        #9baab7;
-
-    border:
-        1px solid
-        #334754;
-
-    border-radius:
-        10px;
-
-    cursor:
-        pointer;
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.3);
 }
 
-/* ==============================
+.result-head{
+    text-align:center;
+}
+
+.result-icon{
+    width:62px;
+    height:62px;
+
+    margin:auto;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    font-size:30px;
+}
+
+.result-icon.success{
+    background:#edf9f3;
+    color:var(--green);
+}
+
+.result-icon.fail{
+    background:#fff0f2;
+    color:var(--red);
+}
+
+.result-head h2{
+    margin:13px 0 7px;
+}
+
+.result-head p{
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.7;
+}
+
+.final-score-box{
+    margin:20px 0;
+
+    padding:19px;
+
+    border-radius:9px;
+
+    text-align:center;
+
+    background:#f5f8fa;
+}
+
+.final-score-label{
+    color:var(--muted);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+.final-score{
+    color:var(--primary);
+
+    font-size:46px;
+
+    font-weight:900;
+}
+
+.result-table{
+    border:1px solid var(--line);
+    border-radius:8px;
+
+    overflow:hidden;
+}
+
+.result-line{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+
+    padding:10px 12px;
+
+    border-bottom:1px solid var(--line);
+
+    font-size:10px;
+}
+
+.result-line:last-child{
+    border-bottom:0;
+}
+
+.result-line span:first-child{
+    color:var(--muted);
+}
+
+.result-line span:last-child{
+    font-weight:700;
+    text-align:right;
+}
+
+.result-buttons{
+    display:flex;
+    gap:10px;
+
+    margin-top:20px;
+}
+
+.result-buttons .btn{
+    flex:1;
+}
+
+/* =========================================
    SHAKE
-============================== */
+========================================= */
 
-.shake {
-    animation:
-        shake .35s;
+.shake{
+    animation:shake .35s;
 }
 
-@keyframes shake {
-
-    0% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(-7px);
-    }
-
-    50% {
-        transform: translateX(7px);
-    }
-
-    75% {
-        transform: translateX(-4px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
+@keyframes shake{
+    0%{transform:translateX(0)}
+    25%{transform:translateX(-8px)}
+    50%{transform:translateX(8px)}
+    75%{transform:translateX(-4px)}
+    100%{transform:translateX(0)}
 }
 
-.hidden {
-    display: none !important;
+footer{
+    text-align:center;
+
+    color:#83909a;
+
+    font-size:9px;
+
+    padding:0 20px 35px;
 }
 </style>
 </head>
@@ -1069,50 +1124,78 @@ header {
      SECURITY
 ====================================================== -->
 
-<div
-    class="security-screen"
-    id="securityScreen"
->
+<div class="security" id="security">
 
     <div class="security-card">
 
-        <div class="security-icon">
+        <div class="security-mark">
             🔐
         </div>
 
-        <h1>
-            SECURITY CHECK
-        </h1>
+        <h2>
+            予約受付セキュリティ確認
+        </h2>
 
         <p>
-            予約システムへ接続するには、
-            下のセキュリティコードを入力してください。
+            NEXORA X7の予約受付に進むには、
+            セキュリティコードを入力してください。
         </p>
 
         <div
             class="security-code"
             id="securityCode"
-        ></div>
+        >
+            ------
+        </div>
 
         <input
             id="securityInput"
             class="security-input"
-            placeholder="コードを入力"
+            maxlength="6"
             autocomplete="off"
-            maxlength="8"
+            placeholder="6桁のコード"
         >
 
         <button
-            id="securityButton"
-            class="security-button"
+            class="security-btn"
+            id="securityBtn"
         >
-            セキュリティ認証
+            認証して予約へ進む
         </button>
 
         <div
-            id="securityError"
             class="security-error"
+            id="securityError"
         ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RUSH
+====================================================== -->
+
+<div
+    class="rush"
+    id="rush"
+>
+
+    <div class="rush-icon">
+        🚨
+    </div>
+
+    <div>
+
+        <strong>
+            現在、NEXORA X7の予約が殺到しています
+        </strong>
+
+        <p id="rushText">
+            他の利用者による予約操作が急増しています。
+            予約枠の変動にご注意ください。
+        </p>
 
     </div>
 
@@ -1123,28 +1206,53 @@ header {
      HEADER
 ====================================================== -->
 
-<header>
+<header class="topbar">
 
-    <div class="header-inner">
+    <div class="topbar-inner">
 
-        <div class="logo">
-            HOSPI-TOWN RESERVATION
+        <div class="brand">
+
+            <div class="logo">
+                N
+            </div>
+
+            <div>
+
+                <h1 class="brand-title">
+                    NOVA STORE
+                </h1>
+
+                <span class="brand-sub">
+                    ゲーム機予約受付
+                </span>
+
+            </div>
+
         </div>
+
 
         <div class="hud">
 
-            <div class="timer">
-                ⏱
-                <span id="timer">
-                    02:00
-                </span>
+            <div>
+
+                <div class="timer-label">
+                    制限時間
+                </div>
+
+                <div id="timer">
+                    01:00
+                </div>
+
             </div>
 
-            <div class="score">
+
+            <div class="score-hud">
+
                 SCORE:
                 <strong id="score">
                     0
                 </strong>
+
             </div>
 
         </div>
@@ -1158,737 +1266,1055 @@ header {
      MAIN
 ====================================================== -->
 
-<main class="container">
+<main class="page">
 
-
-<!-- =====================================================
-     LEFT
-====================================================== -->
-
-<section class="panel">
-
-    <div class="panel-header">
-
-        <h1>
-            星見ヶ丘総合病院
-        </h1>
-
-        <p>
-            全国から患者が集まる超人気病院。<br>
-            予約枠は非常に限られています。
-        </p>
-
-        <div class="live">
-            🚨 現在の予約倍率：
-            <strong>
-                38.7倍
-            </strong>
-        </div>
-
+    <div class="breadcrumb">
+        NOVA STORE ＞ 新商品 ＞ NEXORA X7 ＞ 予約
     </div>
 
 
-    <div class="form">
+    <div class="grid">
 
 
-        <!-- =====================
-             BASIC
-        ====================== -->
+        <!-- =================================================
+             MAIN CARD
+        ================================================== -->
 
-        <div class="section-title">
-            ◆ 基本予約
-        </div>
+        <section class="card">
 
-        <div class="form-grid">
+            <div class="product">
 
-            <div class="field">
+                <div class="product-flex">
 
-                <label>
-                    診療科
-                </label>
+                    <div>
 
-                <select id="department">
+                        <h2 class="product-name">
+                            NEXORA X7
+                        </h2>
 
-                    <option>内科</option>
-                    <option>外科</option>
-                    <option>皮膚科</option>
-                    <option>眼科</option>
-                    <option>耳鼻咽喉科</option>
-                    <option>小児科</option>
-                    <option>整形外科</option>
-                    <option>脳神経外科</option>
-                    <option>心臓血管外科</option>
-                    <option>謎解き科</option>
+                        <span class="product-tag">
+                            2026年 最新モデル
+                        </span>
 
-                </select>
-
-            </div>
+                    </div>
 
 
-            <div class="field">
+                    <div class="price">
 
-                <label>
-                    担当医
-                </label>
+                        <small>
+                            メーカー希望価格
+                        </small>
 
-                <select id="doctor">
+                        <strong>
+                            ¥59,800
+                        </strong>
 
-                    <option>青木先生</option>
-                    <option>田中先生</option>
-                    <option>佐藤先生</option>
-                    <option>山本先生</option>
-                    <option>鈴木先生</option>
-                    <option>院長</option>
-                    <option>空いている先生</option>
+                    </div>
 
-                </select>
+                </div>
 
             </div>
 
 
-            <div class="field">
+            <!-- STEPS -->
 
-                <label>
-                    受診日
-                </label>
+            <div class="steps">
 
-                <select id="date">
-
-                    <option>2026年9月20日</option>
-                    <option>2026年9月21日</option>
-                    <option>2026年9月22日</option>
-                    <option>2026年9月23日</option>
-                    <option>2026年9月24日</option>
-                    <option>2026年9月25日</option>
-                    <option>2026年9月26日</option>
-                    <option>2026年9月27日</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    時間帯
-                </label>
-
-                <select id="period">
-
-                    <option>早朝</option>
-                    <option>午前</option>
-                    <option>昼</option>
-                    <option>午後</option>
-                    <option>夕方</option>
-                    <option>夜</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================
-             TIME
-        ====================== -->
-
-        <div class="section-title">
-            ◆ 希望時間
-        </div>
-
-        <div
-            class="time-grid"
-            id="timeGrid"
-        ></div>
-
-
-        <!-- =====================
-             BUILDING
-        ====================== -->
-
-        <div class="section-title">
-            ◆ 院内位置
-        </div>
-
-        <div class="form-grid">
-
-            <div class="field">
-
-                <label>
-                    棟
-                </label>
-
-                <select id="building">
-
-                    <option>A棟</option>
-                    <option>B棟</option>
-                    <option>C棟</option>
-                    <option>D棟</option>
-                    <option>新館</option>
-                    <option>旧館</option>
-                    <option>地下研究棟</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    階
-                </label>
-
-                <select id="floor">
-
-                    <option>1階</option>
-                    <option>2階</option>
-                    <option>3階</option>
-                    <option>4階</option>
-                    <option>5階</option>
-                    <option>6階</option>
-                    <option>7階</option>
-                    <option>地下1階</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    診察室
-                </label>
-
-                <select id="room">
-
-                    <option>101</option>
-                    <option>102</option>
-                    <option>203</option>
-                    <option>305</option>
-                    <option>404</option>
-                    <option>505</option>
-                    <option>777</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    受付方法
-                </label>
-
-                <select id="reception">
-
-                    <option>有人受付</option>
-                    <option>自動受付機</option>
-                    <option>スマホ受付</option>
-                    <option>受付ロボット</option>
-                    <option>空中ディスプレイ受付</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================
-             ARRIVAL
-        ====================== -->
-
-        <div class="section-title">
-            ◆ 来院関連
-        </div>
-
-        <div class="form-grid">
-
-            <div class="field">
-
-                <label>
-                    来院手段
-                </label>
-
-                <select id="transport">
-
-                    <option>徒歩</option>
-                    <option>自転車</option>
-                    <option>電車</option>
-                    <option>バス</option>
-                    <option>タクシー</option>
-                    <option>自家用車</option>
-                    <option>ヘリコプター</option>
-                    <option>瞬間移動</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    駐車場
-                </label>
-
-                <select id="parking">
-
-                    <option>利用しない</option>
-                    <option>第1駐車場</option>
-                    <option>第2駐車場</option>
-                    <option>地下駐車場</option>
-                    <option>屋上駐車場</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    待合室
-                </label>
-
-                <select id="waitingRoom">
-
-                    <option>1号待合室</option>
-                    <option>2号待合室</option>
-                    <option>静かな待合室</option>
-                    <option>景色のいい待合室</option>
-                    <option>VIP待合室</option>
-                    <option>地下待合室</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    座席
-                </label>
-
-                <select id="seat">
-
-                    <option>窓側</option>
-                    <option>中央</option>
-                    <option>入口付近</option>
-                    <option>出口付近</option>
-                    <option>テレビの近く</option>
-                    <option>コンセント付近</option>
-                    <option>一番すみ</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================
-             COMPLETELY USELESS
-        ====================== -->
-
-        <div class="section-title">
-            ◆ なぜか必要な項目
-        </div>
-
-        <div class="form-grid">
-
-            <div class="field">
-
-                <label>
-                    今日の気分
-                </label>
-
-                <select id="mood">
-
-                    <option>元気</option>
-                    <option>普通</option>
-                    <option>眠い</option>
-                    <option>緊張</option>
-                    <option>少し不安</option>
-                    <option>非常に元気</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    服装
-                </label>
-
-                <select id="clothes">
-
-                    <option>普段着</option>
-                    <option>スーツ</option>
-                    <option>制服</option>
-                    <option>ジャージ</option>
-                    <option>パジャマ</option>
-                    <option>正装</option>
-                    <option>宇宙服</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    飲み物
-                </label>
-
-                <select id="drink">
-
-                    <option>水</option>
-                    <option>お茶</option>
-                    <option>コーヒー</option>
-                    <option>ジュース</option>
-                    <option>何も飲まない</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    院内BGM
-                </label>
-
-                <select id="bgm">
-
-                    <option>無音</option>
-                    <option>ピアノ</option>
-                    <option>クラシック</option>
-                    <option>ジャズ</option>
-                    <option>環境音</option>
-                    <option>イルカ</option>
-                    <option>壮大な映画音楽</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    呼び出し方法
-                </label>
-
-                <select id="call">
-
-                    <option>館内放送</option>
-                    <option>モニター</option>
-                    <option>スマホ通知</option>
-                    <option>看護師</option>
-                    <option>ロボット</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    診察後
-                </label>
-
-                <select id="after">
-
-                    <option>帰宅</option>
-                    <option>仕事</option>
-                    <option>学校</option>
-                    <option>買い物</option>
-                    <option>映画</option>
-                    <option>旅行</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    帰宅方法
-                </label>
-
-                <select id="returnWay">
-
-                    <option>徒歩</option>
-                    <option>電車</option>
-                    <option>バス</option>
-                    <option>タクシー</option>
-                    <option>自転車</option>
-                    <option>ワープ</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    ラッキーカラー
-                </label>
-
-                <select id="lucky">
-
-                    <option>青</option>
-                    <option>赤</option>
-                    <option>黄色</option>
-                    <option>緑</option>
-                    <option>紫</option>
-                    <option>オレンジ</option>
-                    <option>銀</option>
-                    <option>虹色</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================
-             CONSENT
-        ====================== -->
-
-        <div class="section-title">
-            ◆ 同意事項
-        </div>
-
-        <div class="consent">
-
-            <div class="consent-title">
-                予約前に以下を確認してください
-            </div>
-
-            <div class="consent-text">
-
-                このゲーム内予約システムでは、
-                大量の確認項目が表示されます。<br><br>
-
-                ・予約内容を確認したこと<br>
-                ・時間制限があることを理解したこと<br>
-                ・予約枠が埋まる可能性があること<br>
-                ・ゲーム内の架空病院であること<br>
-                ・必要以上の選択項目が存在すること<br>
-                ・謎のラッキーカラーを選択すること<br>
-                ・ロボットから呼び出される可能性があること<br>
-                ・予約ボタンを押した時点で最終判定されること
-
-            </div>
-
-
-            <label class="check">
-                <input
-                    type="checkbox"
-                    id="consent1"
-                >
-                予約内容を確認しました。
-            </label>
-
-            <label class="check">
-                <input
-                    type="checkbox"
-                    id="consent2"
-                >
-                ゲームのルールに同意します。
-            </label>
-
-            <label class="check">
-                <input
-                    type="checkbox"
-                    id="consent3"
-                >
-                制限時間があることに同意します。
-            </label>
-
-            <label class="check">
-                <input
-                    type="checkbox"
-                    id="consent4"
-                >
-                この大量の選択項目を最後まで入力します。
-            </label>
-
-        </div>
-
-
-        <!-- =====================
-             OTHER AGREEMENTS
-        ====================== -->
-
-        <div class="section-title">
-            ◆ その他確認
-        </div>
-
-        <div class="check-list">
-
-            <label class="check">
-                <input type="checkbox" id="extra1">
-                予約争奪戦に参加する
-            </label>
-
-            <label class="check">
-                <input type="checkbox" id="extra2">
-                予約システムを信頼する
-            </label>
-
-            <label class="check">
-                <input type="checkbox" id="extra3">
-                ロボット受付を許可する
-            </label>
-
-            <label class="check">
-                <input type="checkbox" id="extra4">
-                どう考えても不要な質問がある
-            </label>
-
-        </div>
-
-
-        <button
-            class="reserve"
-            id="reserveButton"
-        >
-            🔥 予約を確定する
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SIDE
-====================================================== -->
-
-<aside class="panel">
-
-    <div class="side">
-
-        <div class="side-title">
-            LIVE STATUS
-        </div>
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number red"
-                id="popularity"
-            >
-                98.7%
-            </div>
-
-            <p>
-                本日の予約枠消化率
-            </p>
-
-            <div class="queue">
                 <div
-                    class="queue-inner"
-                    id="queue"
-                ></div>
+                    class="step active"
+                    data-step="0"
+                >
+                    購入者情報
+                </div>
+
+                <div
+                    class="step"
+                    data-step="1"
+                >
+                    本体
+                </div>
+
+                <div
+                    class="step"
+                    data-step="2"
+                >
+                    周辺機器
+                </div>
+
+                <div
+                    class="step"
+                    data-step="3"
+                >
+                    お届け
+                </div>
+
+                <div
+                    class="step"
+                    data-step="4"
+                >
+                    お支払い
+                </div>
+
+                <div
+                    class="step"
+                    data-step="5"
+                >
+                    確認・同意
+                </div>
+
             </div>
 
-        </div>
+
+            <div class="content">
 
 
-        <div class="stat-card">
+                <!-- =================================================
+                     STEP 0
+                ================================================== -->
+
+                <section
+                    class="panel active"
+                    data-panel="0"
+                >
+
+                    <h3 class="title">
+                        購入者情報
+                    </h3>
+
+                    <p class="desc">
+                        予約者の情報を入力してください。
+                    </p>
+
+                    <div class="notice info">
+
+                        ※これはゲーム用の架空の予約システムです。
+                        実際の注文・決済・配送は行われません。
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="field">
+
+                            <label>
+                                姓<span class="req">*</span>
+                            </label>
+
+                            <input
+                                id="lastName"
+                                placeholder="山田"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                名<span class="req">*</span>
+                            </label>
+
+                            <input
+                                id="firstName"
+                                placeholder="太郎"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                メールアドレス<span class="req">*</span>
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+                                placeholder="example@example.com"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                電話番号<span class="req">*</span>
+                            </label>
+
+                            <input
+                                id="phone"
+                                placeholder="090-0000-0000"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                購入目的
+                            </label>
+
+                            <select id="purpose">
+
+                                <option>自分用</option>
+                                <option>家族用</option>
+                                <option>プレゼント</option>
+                                <option>コレクション</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                ゲーム経験
+                            </label>
+
+                            <select id="experience">
+
+                                <option>初心者</option>
+                                <option>少し経験あり</option>
+                                <option>普通</option>
+                                <option>かなり遊ぶ</option>
+                                <option>コアゲーマー</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <div></div>
+
+                        <button
+                            class="btn primary"
+                            onclick="nextStep()"
+                        >
+                            次へ
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 1
+                ================================================== -->
+
+                <section
+                    class="panel"
+                    data-panel="1"
+                >
+
+                    <h3 class="title">
+                        NEXORA X7 本体を選択
+                    </h3>
+
+                    <p class="desc">
+                        本体モデル、カラー、ストレージを選択してください。
+                    </p>
+
+
+                    <div class="field">
+
+                        <label>
+                            本体モデル<span class="req">*</span>
+                        </label>
+
+                    </div>
+
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="model"
+                                value="NEXORA X7"
+                            >
+
+                            <strong>
+                                NEXORA X7
+                            </strong>
+
+                            <small>
+                                標準モデル / ¥59,800
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="model"
+                                value="NEXORA X7 Pro"
+                            >
+
+                            <strong>
+                                NEXORA X7 Pro
+                            </strong>
+
+                            <small>
+                                高性能モデル / ¥69,800
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="field" style="margin-top:20px">
+
+                        <label>
+                            本体カラー
+                        </label>
+
+                        <select id="color">
+
+                            <option>ホワイト</option>
+                            <option>ブラック</option>
+                            <option>ブルー</option>
+                            <option>シルバー</option>
+                            <option>レッド</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field" style="margin-top:15px">
+
+                        <label>
+                            ストレージ
+                        </label>
+
+                        <select id="storage">
+
+                            <option>1TB</option>
+                            <option>2TB</option>
+                            <option>4TB</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn"
+                            onclick="prevStep()"
+                        >
+                            戻る
+                        </button>
+
+                        <button
+                            class="btn primary"
+                            onclick="nextStep()"
+                        >
+                            周辺機器へ
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 2
+                ================================================== -->
+
+                <section
+                    class="panel"
+                    data-panel="2"
+                >
+
+                    <h3 class="title">
+                        周辺機器・セット
+                    </h3>
+
+                    <p class="desc">
+                        必要な商品を選択してください。
+                    </p>
+
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="checkbox"
+                                class="addon"
+                                value="追加コントローラー"
+                            >
+
+                            <strong>
+                                追加コントローラー
+                            </strong>
+
+                            <small>
+                                ¥8,980
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="checkbox"
+                                class="addon"
+                                value="専用ヘッドセット"
+                            >
+
+                            <strong>
+                                専用ヘッドセット
+                            </strong>
+
+                            <small>
+                                ¥12,800
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="checkbox"
+                                class="addon"
+                                value="充電スタンド"
+                            >
+
+                            <strong>
+                                充電スタンド
+                            </strong>
+
+                            <small>
+                                ¥5,980
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="checkbox"
+                                class="addon"
+                                value="専用ケース"
+                            >
+
+                            <strong>
+                                専用トラベルケース
+                            </strong>
+
+                            <small>
+                                ¥4,980
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+                    <div
+                        class="notice warn"
+                        style="margin-top:18px"
+                    >
+
+                        人気商品のため、
+                        周辺機器を選択している間にも
+                        本体在庫が変動する場合があります。
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn"
+                            onclick="prevStep()"
+                        >
+                            戻る
+                        </button>
+
+                        <button
+                            class="btn primary"
+                            onclick="nextStep()"
+                        >
+                            お届け方法へ
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 3
+                ================================================== -->
+
+                <section
+                    class="panel"
+                    data-panel="3"
+                >
+
+                    <h3 class="title">
+                        お届け方法
+                    </h3>
+
+                    <p class="desc">
+                        配送方法とお届け時間を選択してください。
+                    </p>
+
+
+                    <div class="shipping">
+
+                        <div
+                            class="shipping-card selected"
+                            data-shipping="通常配送"
+                        >
+
+                            <strong>
+                                通常配送
+                            </strong>
+
+                            <small>
+                                無料 / 3〜5日
+                            </small>
+
+                        </div>
+
+
+                        <div
+                            class="shipping-card"
+                            data-shipping="お急ぎ便"
+                        >
+
+                            <strong>
+                                お急ぎ便
+                            </strong>
+
+                            <small>
+                                ¥980 / 1〜2日
+                            </small>
+
+                        </div>
+
+
+                        <div
+                            class="shipping-card"
+                            data-shipping="店舗受取"
+                        >
+
+                            <strong>
+                                店舗受取
+                            </strong>
+
+                            <small>
+                                無料 / 発売日
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid"
+                         style="margin-top:18px">
+
+                        <div class="field">
+
+                            <label>
+                                希望お届け時間
+                            </label>
+
+                            <select id="deliveryTime">
+
+                                <option>指定なし</option>
+                                <option>午前中</option>
+                                <option>14:00〜16:00</option>
+                                <option>16:00〜18:00</option>
+                                <option>18:00〜20:00</option>
+                                <option>19:00〜21:00</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                配送メモ
+                            </label>
+
+                            <input
+                                id="deliveryMemo"
+                                placeholder="任意"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn"
+                            onclick="prevStep()"
+                        >
+                            戻る
+                        </button>
+
+                        <button
+                            class="btn primary"
+                            onclick="nextStep()"
+                        >
+                            支払い方法へ
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 4
+                ================================================== -->
+
+                <section
+                    class="panel"
+                    data-panel="4"
+                >
+
+                    <h3 class="title">
+                        お支払い方法
+                    </h3>
+
+                    <p class="desc">
+                        支払い方法を選択してください。
+                    </p>
+
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="クレジットカード"
+                            >
+
+                            <strong>
+                                クレジットカード
+                            </strong>
+
+                            <small>
+                                VISA / Mastercard / JCB等
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="コンビニ払い"
+                            >
+
+                            <strong>
+                                コンビニ払い
+                            </strong>
+
+                            <small>
+                                発行された番号を使用
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="電子マネー"
+                            >
+
+                            <strong>
+                                電子マネー
+                            </strong>
+
+                            <small>
+                                対応サービスから選択
+                            </small>
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="店舗決済"
+                            >
+
+                            <strong>
+                                店舗決済
+                            </strong>
+
+                            <small>
+                                店舗受取時に支払い
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="field"
+                         style="margin-top:18px">
+
+                        <label>
+                            電子マネーの種類
+                        </label>
+
+                        <select id="wallet">
+
+                            <option>選択しない</option>
+                            <option>NOVA Pay</option>
+                            <option>QuickPay</option>
+                            <option>Game Wallet</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn"
+                            onclick="prevStep()"
+                        >
+                            戻る
+                        </button>
+
+                        <button
+                            class="btn primary"
+                            onclick="nextStep()"
+                        >
+                            確認画面へ
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 5
+                ================================================== -->
+
+                <section
+                    class="panel"
+                    data-panel="5"
+                >
+
+                    <h3 class="title">
+                        最終確認・同意
+                    </h3>
+
+                    <p class="desc">
+                        予約内容を確認し、すべての項目に同意してください。
+                    </p>
+
+
+                    <div
+                        class="summary"
+                        id="summary"
+                    ></div>
+
+
+                    <div
+                        class="agreement"
+                        style="margin-top:18px"
+                    >
+
+                        <div class="agreement-text">
+
+                            <strong>
+                                NEXORA X7 予約サービス利用規約
+                            </strong>
+
+                            <br><br>
+
+                            本サービスはゲームとして作成された
+                            架空の予約システムです。
+
+                            <br><br>
+
+                            実際の商品購入、決済、配送、
+                            在庫確保は行われません。
+
+                            <br><br>
+
+                            予約受付中はアクセス集中により
+                            予約枠がなくなる場合があります。
+
+                            <br><br>
+
+                            最終確定ボタンを押した時点で
+                            予約結果をゲーム内で判定します。
+
+                            <br><br>
+
+                            制限時間終了後はゲームを自動終了します。
+
+                            <br><br>
+
+                            本ゲームで入力した情報は
+                            外部へ送信されません。
+
+                        </div>
+
+
+                        <label class="check">
+
+                            <input
+                                type="checkbox"
+                                id="agreeTerms"
+                            >
+
+                            利用規約を確認しました。
+
+                        </label>
+
+
+                        <label class="check">
+
+                            <input
+                                type="checkbox"
+                                id="agreeReservation"
+                            >
+
+                            予約内容を確認しました。
+
+                        </label>
+
+
+                        <label class="check">
+
+                            <input
+                                type="checkbox"
+                                id="agreeFake"
+                            >
+
+                            この予約がゲーム内の架空予約であることを確認しました。
+
+                        </label>
+
+
+                        <label class="check">
+
+                            <input
+                                type="checkbox"
+                                id="agreeTime"
+                            >
+
+                            制限時間について確認しました。
+
+                        </label>
+
+                    </div>
+
+
+                    <div
+                        class="notice warn"
+                        style="margin-top:15px"
+                    >
+
+                        予約確定後は結果が表示されます。
+                        人気商品のため、最終処理中に在庫切れになる場合があります。
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn"
+                            onclick="prevStep()"
+                        >
+                            戻る
+                        </button>
+
+                        <button
+                            class="btn success"
+                            id="finalButton"
+                            onclick="finalizeReservation()"
+                        >
+                            予約を確定する
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIDE
+        ================================================== -->
+
+        <aside>
+
+            <div class="card side-card">
+
+                <div class="side-title">
+                    NEXORA X7 予約状況
+                </div>
+
+
+                <div class="status-row">
+
+                    <div class="status-label">
+                        現在の在庫
+                    </div>
+
+                    <div
+                        class="status-value inventory"
+                        id="stock"
+                    >
+                        6台
+                    </div>
+
+                    <div class="inventory-bar">
+
+                        <div
+                            class="inventory-inner"
+                            id="stockBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="status-row">
+
+                    <div class="status-label">
+                        予約希望者
+                    </div>
+
+                    <div
+                        class="status-value"
+                        id="applicants"
+                    >
+                        18,421人
+                    </div>
+
+                </div>
+
+
+                <div class="status-row">
+
+                    <div class="status-label">
+                        現在の倍率
+                    </div>
+
+                    <div
+                        class="status-value"
+                        id="倍率"
+                    >
+                        31.7倍
+                    </div>
+
+                </div>
+
+
+                <div class="status-row">
+
+                    <div class="status-label">
+                        あなたのスコア
+                    </div>
+
+                    <div
+                        class="status-value"
+                        id="liveScore"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
 
             <div
-                class="stat-number yellow"
-                id="remaining"
+                class="card side-card"
+                style="margin-top:15px"
             >
-                3
+
+                <div class="side-title">
+                    予約システム通知
+                </div>
+
+                <div
+                    class="activity"
+                    id="activity"
+                >
+
+                    <div class="activity-item">
+                        [SYSTEM] 予約ページ準備完了
+                    </div>
+
+                    <div class="activity-item">
+                        [SYSTEM] NEXORA X7 在庫確認
+                    </div>
+
+                    <div class="activity-item">
+                        [SYSTEM] 予約受付開始
+                    </div>
+
+                </div>
+
             </div>
 
-            <p>
-                残り予約枠
-            </p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number"
-                id="people"
-            >
-                1284
-            </div>
-
-            <p>
-                現在の予約希望者
-            </p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number green"
-                id="multiplier"
-            >
-                38.7倍
-            </div>
-
-            <p>
-                現在の予約倍率
-            </p>
-
-        </div>
-
-
-        <div class="side-title">
-            SYSTEM LOG
-        </div>
-
-        <div
-            class="log-box"
-            id="logBox"
-        >
-
-            <div class="log-item">
-                [SYSTEM] 起動
-            </div>
-
-            <div class="log-item">
-                [SYSTEM] 予約サーバー接続
-            </div>
-
-            <div class="log-item">
-                [SYSTEM] 待機中
-            </div>
-
-        </div>
+        </aside>
 
     </div>
-
-</aside>
 
 </main>
+
+
+<footer>
+    NOVA STORE / NEXORA X7 予約ゲーム｜
+    架空の商品・架空の店舗です
+</footer>
 
 
 <!-- =====================================================
@@ -1900,50 +2326,67 @@ header {
     id="modal"
 >
 
-    <div class="modal-card">
+    <div class="result">
 
-        <div
-            class="modal-icon"
-            id="modalIcon"
-        >
-            🎉
+        <div class="result-head">
+
+            <div
+                class="result-icon"
+                id="resultIcon"
+            >
+                ✓
+            </div>
+
+            <h2 id="resultTitle">
+                予約結果
+            </h2>
+
+            <p id="resultMessage">
+                -
+            </p>
+
         </div>
 
-        <h2 id="modalTitle">
-            結果
-        </h2>
 
-        <p id="modalMessage"></p>
+        <div class="final-score-box">
+
+            <div class="final-score-label">
+                YOUR SCORE
+            </div>
+
+            <div
+                class="final-score"
+                id="finalScore"
+            >
+                0
+            </div>
+
+        </div>
+
 
         <div
-            class="result-box"
-            id="resultBox"
+            class="result-table"
+            id="resultTable"
         ></div>
 
-        <div
-            class="big-score"
-            id="finalScore"
-        >
-            0
+
+        <div class="result-buttons">
+
+            <button
+                class="btn primary"
+                id="closeResult"
+            >
+                結果を閉じる
+            </button>
+
+            <button
+                class="btn"
+                id="restart"
+            >
+                もう一度挑戦
+            </button>
+
         </div>
-
-        <p>
-            YOUR SCORE
-        </p>
-
-        <button
-            class="close"
-            id="closeModal"
-        >
-            結果を見る
-        </button>
-
-        <button
-            class="restart"
-            id="restart"
-        >
-            もう一度挑戦する
-        </button>
 
     </div>
 
@@ -1952,46 +2395,52 @@ header {
 
 <script>
 
-/* =====================================================
-   GAME STATE
-====================================================== */
+/* =========================================================
+   SETTINGS
+========================================================= */
 
-const GAME_TIME = 120;
+const GAME_TIME = 60;
 
 let timeLeft = GAME_TIME;
+
 let timer = null;
 
 let started = false;
+
 let finished = false;
 
-let selectedTime = "";
+let currentStep = 0;
 
 let score = 0;
 
-let changedCount = 0;
-let consentCount = 0;
-let checkCount = 0;
+let mistakes = 0;
+
+let actions = 0;
+
+let rushCount = 0;
+
+let selectedShipping = "通常配送";
 
 
-/* =====================================================
-   SECURITY CODE
-====================================================== */
+/* =========================================================
+   SECURITY
+========================================================= */
 
 let securityCode = "";
 
-function generateSecurityCode() {
+function generateSecurityCode(){
 
     const chars =
         "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
     securityCode = "";
 
-    for(let i = 0; i < 6; i++) {
+    for(let i=0;i<6;i++){
 
         securityCode +=
             chars[
                 Math.floor(
-                    Math.random() * chars.length
+                    Math.random()*chars.length
                 )
             ];
 
@@ -2006,15 +2455,11 @@ function generateSecurityCode() {
 generateSecurityCode();
 
 
-/* =====================================================
-   SECURITY AUTH
-====================================================== */
-
 document
-    .getElementById("securityButton")
+    .getElementById("securityBtn")
     .addEventListener(
         "click",
-        verifySecurity
+        checkSecurity
     );
 
 
@@ -2024,15 +2469,15 @@ document
         "keydown",
         e => {
 
-            if(e.key === "Enter") {
-                verifySecurity();
+            if(e.key === "Enter"){
+                checkSecurity();
             }
 
         }
     );
 
 
-function verifySecurity() {
+function checkSecurity(){
 
     const input =
         document.getElementById(
@@ -2042,44 +2487,59 @@ function verifySecurity() {
         .toUpperCase();
 
 
-    if(input === securityCode) {
+    if(input === securityCode){
 
         document
             .getElementById(
-                "securityScreen"
+                "security"
             )
             .classList.add("hidden");
 
+        score += 20;
+
+        updateScore();
+
         addLog(
             "[SECURITY] 認証成功",
-            true
+            "good"
         );
 
         startGame();
 
-    } else {
+    }else{
 
-        score -= 10;
+        score =
+            Math.max(
+                0,
+                score - 10
+            );
+
+        mistakes++;
+
+        updateScore();
+
+        document.getElementById(
+            "securityError"
+        ).textContent =
+            "セキュリティコードが一致しません。";
 
         document
-            .getElementById("securityError")
-            .textContent =
-                "セキュリティコードが違います。";
-
-        document
-            .querySelector(".security-card")
+            .querySelector(
+                ".security-card"
+            )
             .classList.add("shake");
 
-        setTimeout(() => {
-
+        setTimeout(()=>{
             document
-                .querySelector(".security-card")
+                .querySelector(
+                    ".security-card"
+                )
                 .classList.remove("shake");
-
-        }, 400);
+        },400);
 
         addLog(
-            "[SECURITY] 認証失敗"
+            "[SECURITY] 認証失敗",
+            "alert"
         );
 
     }
@@ -2087,219 +2547,415 @@ function verifySecurity() {
 }
 
 
-/* =====================================================
-   START GAME
-====================================================== */
+/* =========================================================
+   START
+========================================================= */
 
-function startGame() {
+function startGame(){
 
     if(started) return;
 
     started = true;
 
-    startTimer();
+    updateTimer();
+
+    timer =
+        setInterval(()=>{
+
+            if(finished) return;
+
+            timeLeft--;
+
+            updateTimer();
+
+            if(timeLeft === 15){
+
+                showRush(
+                    "残り15秒です。急いで予約を完了してください。"
+                );
+
+            }
+
+
+            if(timeLeft <= 0){
+
+                timeLeft = 0;
+
+                updateTimer();
+
+                finishGame("timeout");
+
+            }
+
+        },1000);
+
+
+    scheduleRush();
 
     addLog(
-        "[SYSTEM] ゲーム開始"
+        "[SYSTEM] 予約ゲーム開始"
     );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    TIMER
-====================================================== */
+========================================================= */
 
-function startTimer() {
-
-    timer = setInterval(() => {
-
-        timeLeft--;
-
-        updateTimer();
-
-        randomHospitalStatus();
-
-        if(timeLeft <= 0) {
-
-            clearInterval(timer);
-
-            timeLeft = 0;
-
-            finishGame("timeout");
-
-        }
-
-    }, 1000);
-
-}
-
-
-function updateTimer() {
-
-    const min =
-        Math.floor(
-            timeLeft / 60
-        );
+function updateTimer(){
 
     const sec =
-        timeLeft % 60;
+        String(
+            Math.max(
+                0,
+                timeLeft
+            )
+        ).padStart(2,"0");
 
-    const text =
-        `${String(min).padStart(2,"0")}:` +
-        `${String(sec).padStart(2,"0")}`;
+    document.getElementById(
+        "timer"
+    ).textContent =
+        "00:" + sec;
 
-    const timerElement =
-        document.getElementById("timer");
 
-    timerElement.textContent = text;
+    if(timeLeft <= 15){
 
-    if(timeLeft <= 20) {
-
-        timerElement
+        document
+            .getElementById(
+                "timer"
+            )
             .classList.add("danger");
-
-    } else {
-
-        timerElement
-            .classList.remove("danger");
 
     }
 
 }
 
 
-/* =====================================================
-   TIME SLOTS
-====================================================== */
+/* =========================================================
+   STEP
+========================================================= */
 
-const times = [
-    "08:00",
-    "08:30",
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30"
-];
+function nextStep(){
+
+    if(finished) return;
 
 
-function createTimeSlots() {
+    if(!validateStep(currentStep)){
 
-    const grid =
-        document.getElementById(
-            "timeGrid"
+        mistakes++;
+
+        updateScore();
+
+        return;
+
+    }
+
+
+    if(currentStep < 5){
+
+        currentStep++;
+
+        actions++;
+
+        score += 12;
+
+        renderStep();
+
+        updateScore();
+
+        addLog(
+            `[USER] STEP ${currentStep+1}へ`
         );
 
-    grid.innerHTML = "";
 
-    times.forEach(time => {
+        if(currentStep === 5){
 
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "time";
-
-        const isFull =
-            Math.random() < .62;
-
-
-        if(isFull) {
-
-            button.classList.add("full");
-
-            button.innerHTML =
-                `${time}<small>満席</small>`;
-
-        } else {
-
-            const remaining =
-                Math.floor(
-                    Math.random() * 3
-                ) + 1;
-
-            button.innerHTML =
-                `${time}<small>残り${remaining}枠</small>`;
-
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    if(finished) return;
-
-                    document
-                        .querySelectorAll(".time")
-                        .forEach(el =>
-                            el.classList.remove(
-                                "selected"
-                            )
-                        );
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-                    selectedTime = time;
-
-                    score += 5;
-
-                    addLog(
-                        `[USER] 時間 ${time} を選択`
-                    );
-
-                }
-            );
+            buildSummary();
 
         }
 
-        grid.appendChild(button);
-
-    });
+    }
 
 }
 
-createTimeSlots();
+
+function prevStep(){
+
+    if(finished) return;
+
+    if(currentStep > 0){
+
+        currentStep--;
+
+        renderStep();
+
+    }
+
+}
 
 
-/* =====================================================
-   SELECT EVENTS
-====================================================== */
+function renderStep(){
+
+    document
+        .querySelectorAll(
+            ".panel"
+        )
+        .forEach(panel => {
+
+            panel.classList.toggle(
+                "active",
+                Number(
+                    panel.dataset.panel
+                ) === currentStep
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".step"
+        )
+        .forEach(step => {
+
+            const n =
+                Number(
+                    step.dataset.step
+                );
+
+            step.classList.toggle(
+                "active",
+                n === currentStep
+            );
+
+            step.classList.toggle(
+                "done",
+                n < currentStep
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   FORM VALUE
+========================================================= */
+
+function val(id){
+
+    return document
+        .getElementById(id)
+        .value
+        .trim();
+
+}
+
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function required(id,label){
+
+    if(!val(id)){
+
+        alert(
+            `${label}を入力してください。`
+        );
+
+        addLog(
+            `[ERROR] ${label}未入力`,
+            "alert"
+        );
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+
+function selectedRadio(name){
+
+    const checked =
+        document.querySelector(
+            `input[name="${name}"]:checked`
+        );
+
+    return checked
+        ? checked.value
+        : "";
+
+}
+
+
+function validateStep(step){
+
+    if(step === 0){
+
+        return (
+            required("lastName","姓") &&
+            required("firstName","名") &&
+            required("email","メールアドレス") &&
+            required("phone","電話番号")
+        );
+
+    }
+
+
+    if(step === 1){
+
+        if(!selectedRadio("model")){
+
+            alert(
+                "本体モデルを選択してください。"
+            );
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+
+    if(step === 2){
+
+        return true;
+
+    }
+
+
+    if(step === 3){
+
+        return true;
+
+    }
+
+
+    if(step === 4){
+
+        if(!selectedRadio("payment")){
+
+            alert(
+                "支払い方法を選択してください。"
+            );
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   OPTION UI
+========================================================= */
 
 document
-    .querySelectorAll("select")
-    .forEach(select => {
+    .querySelectorAll(
+        ".option input"
+    )
+    .forEach(input => {
 
-        select.addEventListener(
+        input.addEventListener(
             "change",
-            () => {
+            ()=>{
 
-                if(finished) return;
+                const name =
+                    input.name;
 
-                changedCount++;
+                if(name){
 
-                score += 2;
+                    document
+                        .querySelectorAll(
+                            `.option input[name="${name}"]`
+                        )
+                        .forEach(other => {
+
+                            other
+                                .closest(".option")
+                                .classList.remove(
+                                    "selected"
+                                );
+
+                        });
+
+                }
+
+
+                input
+                    .closest(".option")
+                    .classList.toggle(
+                        "selected",
+                        input.checked
+                    );
+
+
+                actions++;
+
+                score += 3;
+
+                updateScore();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   SHIPPING
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".shipping-card"
+    )
+    .forEach(card=>{
+
+        card.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                    .querySelectorAll(
+                        ".shipping-card"
+                    )
+                    .forEach(
+                        el =>
+                            el.classList.remove(
+                                "selected"
+                            )
+                    );
+
+                card.classList.add(
+                    "selected"
+                );
+
+                selectedShipping =
+                    card.dataset.shipping;
+
+                actions++;
+
+                score += 5;
+
+                updateScore();
 
                 addLog(
-                    `[USER] ${select.previousElementSibling.textContent} → ${select.value}`
+                    `[USER] 配送方法：${selectedShipping}`
                 );
 
             }
@@ -2308,293 +2964,387 @@ document
     });
 
 
-/* =====================================================
-   CHECKBOX EVENTS
-====================================================== */
+/* =========================================================
+   SCORE
+========================================================= */
 
-document
-    .querySelectorAll(
-        '.check input'
-    )
-    .forEach(box => {
+function updateScore(){
 
-        box.addEventListener(
-            "change",
-            () => {
-
-                if(finished) return;
-
-                checkCount++;
-
-                if(box.checked) {
-
-                    score += 3;
-
-                    addLog(
-                        "[USER] 確認事項をチェック"
-                    );
-
-                }
-
-            }
+    score =
+        Math.max(
+            0,
+            Math.round(score)
         );
 
-    });
+    document.getElementById(
+        "score"
+    ).textContent = score;
 
-
-/* =====================================================
-   CONSENT COUNT
-====================================================== */
-
-[
-    "consent1",
-    "consent2",
-    "consent3",
-    "consent4"
-].forEach(id => {
-
-    document
-        .getElementById(id)
-        .addEventListener(
-            "change",
-            e => {
-
-                if(e.target.checked) {
-
-                    consentCount++;
-
-                } else {
-
-                    consentCount--;
-
-                }
-
-            }
-        );
-
-});
-
-
-/* =====================================================
-   LOG
-====================================================== */
-
-function addLog(text, good=false) {
-
-    const box =
-        document.getElementById(
-            "logBox"
-        );
-
-    const item =
-        document.createElement("div");
-
-    item.className =
-        "log-item" +
-        (good ? " good" : "");
-
-    const now =
-        new Date().toLocaleTimeString(
-            "ja-JP",
-            {
-                hour:"2-digit",
-                minute:"2-digit",
-                second:"2-digit"
-            }
-        );
-
-    item.textContent =
-        `[${now}] ${text}`;
-
-    box.prepend(item);
+    document.getElementById(
+        "liveScore"
+    ).textContent = score;
 
 }
 
 
-/* =====================================================
-   RANDOM HOSPITAL STATUS
-====================================================== */
+/* =========================================================
+   SUMMARY
+========================================================= */
 
-function randomHospitalStatus() {
+function buildSummary(){
 
-    const people =
-        Math.floor(
-            1000 +
-            Math.random() * 90000
+    const addons =
+        [
+            ...document.querySelectorAll(
+                ".addon:checked"
+            )
+        ]
+        .map(
+            checkbox =>
+                checkbox.value
         );
 
-    const multiplier =
-        (
-            20 +
-            Math.random() * 30
-        ).toFixed(1);
+
+    const payment =
+        selectedRadio(
+            "payment"
+        );
+
+
+    const model =
+        selectedRadio(
+            "model"
+        );
+
 
     document.getElementById(
-        "people"
-    ).textContent =
-        people.toLocaleString();
+        "summary"
+    ).innerHTML = `
 
-    document.getElementById(
-        "multiplier"
-    ).textContent =
-        multiplier + "倍";
+        ${row(
+            "購入者",
+            `${val("lastName")} ${val("firstName")}`
+        )}
+
+        ${row(
+            "メール",
+            val("email")
+        )}
+
+        ${row(
+            "本体",
+            model || "未選択"
+        )}
+
+        ${row(
+            "カラー",
+            val("color")
+        )}
+
+        ${row(
+            "ストレージ",
+            val("storage")
+        )}
+
+        ${row(
+            "周辺機器",
+            addons.length
+                ? addons.join(" / ")
+                : "なし"
+        )}
+
+        ${row(
+            "配送",
+            selectedShipping
+        )}
+
+        ${row(
+            "時間指定",
+            val("deliveryTime")
+        )}
+
+        ${row(
+            "支払い",
+            payment || "未選択"
+        )}
+
+    `;
 
 }
 
 
-/* =====================================================
-   RESERVATION
-====================================================== */
+function row(label,text){
 
-document
-    .getElementById(
-        "reserveButton"
-    )
-    .addEventListener(
-        "click",
-        tryReservation
-    );
+    return `
+        <div class="summary-row">
+
+            <div class="summary-label">
+                ${escapeHtml(label)}
+            </div>
+
+            <div class="summary-value">
+                ${escapeHtml(
+                    String(text)
+                )}
+            </div>
+
+        </div>
+    `;
+
+}
 
 
-function tryReservation() {
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finalizeReservation(){
 
     if(finished) return;
 
 
-    /* 時間 */
-    if(!selectedTime) {
-
-        failMessage(
-            "まず希望時間を選択してください。"
-        );
-
-        return;
-    }
-
-
-    /* 同意4つ */
-    const consents = [
-        "consent1",
-        "consent2",
-        "consent3",
-        "consent4"
+    const agreements = [
+        "agreeTerms",
+        "agreeReservation",
+        "agreeFake",
+        "agreeTime"
     ];
 
-    const allConsented =
-        consents.every(
+
+    const allAgreed =
+        agreements.every(
             id =>
                 document.getElementById(id).checked
         );
 
 
-    if(!allConsented) {
+    if(!allAgreed){
 
-        failMessage(
-            "同意事項をすべて確認してください。"
+        alert(
+            "すべての同意事項を確認してください。"
+        );
+
+        mistakes++;
+
+        updateScore();
+
+        addLog(
+            "[ERROR] 同意未完了",
+            "alert"
         );
 
         return;
+
     }
 
-
-    /* 余分な確認 */
-    const extra = [
-        "extra1",
-        "extra2",
-        "extra3",
-        "extra4"
-    ];
-
-    const extraChecked =
-        extra.filter(
-            id =>
-                document.getElementById(id).checked
-        ).length;
-
-
-    /* スコア加算 */
-
-    score +=
-        consentCount * 5;
-
-    score +=
-        extraChecked * 4;
-
-
-    /* 残り時間ボーナス */
-
-    score +=
-        timeLeft * 2;
-
-
-    addLog(
-        "[SYSTEM] 予約内容を送信..."
-    );
-
-
-    /* 処理演出 */
 
     const button =
         document.getElementById(
-            "reserveButton"
+            "finalButton"
         );
-
-    button.textContent =
-        "⏳ 予約サーバー接続中...";
 
     button.disabled = true;
 
+    button.textContent =
+        "予約状況を確認しています...";
 
-    setTimeout(() => {
+
+    addLog(
+        "[SYSTEM] 最終在庫確認"
+    );
+
+
+    setTimeout(()=>{
+
+        /*
+            殺到イベントが多いほど
+            成功率が下がる。
+        */
+
+        const chance =
+            rushCount >= 2
+                ? .45
+                : .72;
+
 
         const success =
-            Math.random() > 0.28;
+            Math.random() < chance;
 
 
-        if(success) {
+        if(success){
 
-            addLog(
-                "[SYSTEM] 予約枠を確保しました。",
-                true
+            finishGame(
+                "success"
             );
 
-            finishGame("success");
+        }else{
 
-        } else {
-
-            addLog(
-                "[SYSTEM] 他の利用者に予約枠を取られました。"
+            finishGame(
+                "soldout"
             );
-
-            finishGame("failed");
 
         }
 
-    }, 900);
+    },1000);
 
 }
 
 
-/* =====================================================
-   FAIL MESSAGE
-====================================================== */
+/* =========================================================
+   RUSH
+========================================================= */
 
-function failMessage(text) {
+let rushTimer = null;
 
-    addLog(
-        "[ERROR] " + text
+function scheduleRush(){
+
+    if(finished) return;
+
+
+    rushTimer =
+        setTimeout(
+            ()=>{
+
+                showRush();
+
+                scheduleRush();
+
+            },
+
+            10000 +
+            Math.random()*11000
+        );
+
+}
+
+
+function showRush(message){
+
+    if(finished) return;
+
+
+    rushCount++;
+
+
+    const rush =
+        document.getElementById(
+            "rush"
+        );
+
+
+    document.getElementById(
+        "rushText"
+    ).textContent =
+        message ||
+        "他の利用者による予約操作が急増しています。予約枠が変動しています。";
+
+
+    rush.classList.add(
+        "show"
     );
 
-    alert(text);
+
+    addLog(
+        "[NOTICE] 現在、予約が殺到しています。",
+        "alert"
+    );
+
+
+    /*
+        在庫減少
+    */
+
+    const stockElement =
+        document.getElementById(
+            "stock"
+        );
+
+
+    let stock =
+        parseInt(
+            stockElement.textContent
+        );
+
+
+    stock =
+        Math.max(
+            1,
+            stock - 1
+        );
+
+
+    stockElement.textContent =
+        stock + "台";
+
+
+    const percent =
+        Math.max(
+            8,
+            stock * 15
+        );
+
+
+    document.getElementById(
+        "stockBar"
+    ).style.width =
+        percent + "%";
+
+
+    setTimeout(()=>{
+
+        rush.classList.remove(
+            "show"
+        );
+
+    },4800);
 
 }
 
 
-/* =====================================================
-   FINAL GAME
-====================================================== */
+/* =========================================================
+   LIVE STATS
+========================================================= */
 
-function finishGame(type) {
+setInterval(()=>{
+
+    if(!started || finished) return;
+
+
+    const applicants =
+        Math.floor(
+            15000 +
+            Math.random()*90000
+        );
+
+
+    const multiplier =
+        (
+            25 +
+            Math.random()*45 +
+            rushCount*4
+        ).toFixed(1);
+
+
+    document.getElementById(
+        "applicants"
+    ).textContent =
+        applicants.toLocaleString()
+        + "人";
+
+
+    document.getElementById(
+        "倍率"
+    ).textContent =
+        multiplier + "倍";
+
+},2200);
+
+
+/* =========================================================
+   FINAL GAME
+========================================================= */
+
+function finishGame(result){
 
     if(finished) return;
 
@@ -2602,72 +3352,90 @@ function finishGame(type) {
 
     clearInterval(timer);
 
-    const department =
+    if(rushTimer){
+        clearTimeout(rushTimer);
+    }
+
+
+    /*
+        残り時間ボーナス
+    */
+
+    score +=
+        timeLeft * 3;
+
+
+    /*
+        早く進んだボーナス
+    */
+
+    if(
+        timeLeft >= 35 &&
+        currentStep >= 5
+    ){
+
+        score += 70;
+
+    }
+
+
+    /*
+        同意ボーナス
+    */
+
+    if(
         document.getElementById(
-            "department"
-        ).value;
-
-    const doctor =
+            "agreeTerms"
+        ).checked &&
         document.getElementById(
-            "doctor"
-        ).value;
+            "agreeReservation"
+        ).checked
+    ){
 
-    const date =
-        document.getElementById(
-            "date"
-        ).value;
+        score += 30;
 
-    const building =
-        document.getElementById(
-            "building"
-        ).value;
-
-    const floor =
-        document.getElementById(
-            "floor"
-        ).value;
+    }
 
 
-    /* 時間ボーナス */
+    /*
+        操作数ボーナス
+    */
 
-    if(timeLeft >= 90) {
-        score += 100;
-    } else if(timeLeft >= 60) {
-        score += 60;
-    } else if(timeLeft >= 30) {
+    if(actions >= 12){
         score += 30;
     }
 
 
-    /* 大量入力ボーナス */
+    /*
+        ミス
+    */
 
-    if(changedCount >= 15) {
-        score += 50;
-    }
-
-    if(checkCount >= 8) {
-        score += 50;
-    }
+    score -=
+        mistakes * 12;
 
 
-    /* 失敗ペナルティ */
+    /*
+        結果ペナルティ
+    */
 
-    if(type === "failed") {
+    if(result === "soldout"){
         score -= 80;
     }
 
-    if(type === "timeout") {
-        score -= 150;
+
+    if(result === "timeout"){
+        score -= 120;
     }
 
-
-    /* マイナス防止 */
 
     score =
         Math.max(
             0,
-            score
+            Math.round(score)
         );
+
+
+    updateScore();
 
 
     const modal =
@@ -2675,49 +3443,73 @@ function finishGame(type) {
             "modal"
         );
 
+
     const icon =
         document.getElementById(
-            "modalIcon"
+            "resultIcon"
         );
+
 
     const title =
         document.getElementById(
-            "modalTitle"
+            "resultTitle"
         );
+
 
     const message =
         document.getElementById(
-            "modalMessage"
+            "resultMessage"
         );
 
 
-    if(type === "success") {
+    if(result === "success"){
+
+        icon.className =
+            "result-icon success";
 
         icon.textContent =
-            "🎉";
+            "✓";
 
         title.textContent =
-            "予約成功！";
+            "予約受付が完了しました";
 
         message.textContent =
-            "奇跡的に予約枠を確保しました。";
+            "NEXORA X7の予約枠を確保しました。";
+
+        addLog(
+            "[SYSTEM] 予約成功",
+            "good"
+        );
 
     }
 
-    else if(type === "failed") {
+
+    else if(result === "soldout"){
+
+        icon.className =
+            "result-icon fail";
 
         icon.textContent =
-            "💥";
+            "×";
 
         title.textContent =
-            "予約失敗";
+            "予約できませんでした";
 
         message.textContent =
-            "予約確定直前に他の利用者に抜かれました。";
+            "最終確認中に予約枠がなくなりました。";
+
+        addLog(
+            "[SYSTEM] SOLD OUT",
+            "alert"
+        );
 
     }
 
-    else {
+
+    else{
+
+        icon.className =
+            "result-icon fail";
 
         icon.textContent =
             "⏰";
@@ -2728,73 +3520,23 @@ function finishGame(type) {
         message.textContent =
             "制限時間内に予約を完了できませんでした。";
 
+        addLog(
+            "[SYSTEM] TIME OUT",
+            "alert"
+        );
+
     }
-
-
-    document.getElementById(
-        "resultBox"
-    ).innerHTML = `
-
-        <strong>最終結果</strong>
-        <br><br>
-
-        診療科：
-        ${department}
-
-        <br>
-
-        担当：
-        ${doctor}
-
-        <br>
-
-        受診日：
-        ${date}
-
-        <br>
-
-        時間：
-        ${selectedTime || "未選択"}
-
-        <br>
-
-        場所：
-        ${building}
-        ${floor}
-
-        <br>
-
-        残り時間：
-        ${formatTime(timeLeft)}
-
-        <br>
-
-        選択回数：
-        ${changedCount}
-
-        <br>
-
-        同意数：
-        ${consentCount}
-
-        <br>
-
-        判定：
-        ${
-            type === "success"
-                ? "予約確保"
-                : type === "failed"
-                    ? "予約枠消失"
-                    : "時間切れ"
-        }
-
-    `;
 
 
     document.getElementById(
         "finalScore"
     ).textContent =
         score;
+
+
+    buildResult(
+        result
+    );
 
 
     modal.classList.add(
@@ -2804,11 +3546,193 @@ function finishGame(type) {
 }
 
 
-/* =====================================================
-   TIME FORMAT
-====================================================== */
+/* =========================================================
+   RESULT
+========================================================= */
 
-function formatTime(seconds) {
+function buildResult(result){
+
+    const model =
+        selectedRadio(
+            "model"
+        );
+
+
+    const payment =
+        selectedRadio(
+            "payment"
+        );
+
+
+    const orderNumber =
+        "NX7-" +
+        Math.floor(
+            100000 +
+            Math.random()*900000
+        );
+
+
+    const resultText =
+        result === "success"
+            ? "予約確定"
+            : result === "soldout"
+                ? "予約枠消失"
+                : "時間切れ";
+
+
+    document.getElementById(
+        "resultTable"
+    ).innerHTML = `
+
+        ${resultRow(
+            "結果",
+            resultText
+        )}
+
+        ${resultRow(
+            "予約番号",
+            result === "success"
+                ? orderNumber
+                : "発行なし"
+        )}
+
+        ${resultRow(
+            "商品",
+            model || "未選択"
+        )}
+
+        ${resultRow(
+            "カラー",
+            val("color")
+        )}
+
+        ${resultRow(
+            "ストレージ",
+            val("storage")
+        )}
+
+        ${resultRow(
+            "配送",
+            selectedShipping
+        )}
+
+        ${resultRow(
+            "支払い方法",
+            payment || "未選択"
+        )}
+
+        ${resultRow(
+            "残り時間",
+            formatTime(timeLeft)
+        )}
+
+        ${resultRow(
+            "操作回数",
+            actions
+        )}
+
+        ${resultRow(
+            "ミス回数",
+            mistakes
+        )}
+
+        ${resultRow(
+            "予約殺到",
+            rushCount + "回"
+        )}
+
+        ${resultRow(
+            "最終スコア",
+            score + "点"
+        )}
+
+    `;
+
+}
+
+
+function resultRow(label,value){
+
+    return `
+        <div class="result-line">
+
+            <span>
+                ${escapeHtml(label)}
+            </span>
+
+            <span>
+                ${escapeHtml(
+                    String(value)
+                )}
+            </span>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   LOG
+========================================================= */
+
+function addLog(text,type=""){
+
+    const box =
+        document.getElementById(
+            "activity"
+        );
+
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className =
+        "activity-item " +
+        type;
+
+
+    const time =
+        new Date().toLocaleTimeString(
+            "ja-JP",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+
+    item.textContent =
+        `[${time}] ${text}`;
+
+
+    box.prepend(
+        item
+    );
+
+
+    while(
+        box.children.length > 25
+    ){
+
+        box.removeChild(
+            box.lastElementChild
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMAT
+========================================================= */
+
+function formatTime(seconds){
 
     const min =
         Math.floor(
@@ -2828,31 +3752,39 @@ function formatTime(seconds) {
 }
 
 
-/* =====================================================
-   CLOSE
-====================================================== */
+function escapeHtml(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   RESULT BUTTONS
+========================================================= */
 
 document
     .getElementById(
-        "closeModal"
+        "closeResult"
     )
     .addEventListener(
         "click",
-        () => {
-
+        ()=>{
             document
-                .getElementById("modal")
+                .getElementById(
+                    "modal"
+                )
                 .classList.remove(
                     "show"
                 );
-
         }
     );
 
-
-/* =====================================================
-   RESTART
-====================================================== */
 
 document
     .getElementById(
@@ -2860,19 +3792,19 @@ document
     )
     .addEventListener(
         "click",
-        () => {
-
+        ()=>{
             location.reload();
-
         }
     );
 
 
-/* =====================================================
-   INITIAL DISPLAY
-====================================================== */
+/* =========================================================
+   INITIAL
+========================================================= */
 
 updateTimer();
+
+updateScore();
 
 </script>
 
