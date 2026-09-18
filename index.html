@@ -2154,8 +2154,8 @@ footer{
                         style="margin-top:15px"
                     >
 
-                        予約確定後は結果が表示されます。
-                        人気商品のため、最終処理中に在庫切れになる場合があります。
+                        予約確定後は最終確認を行います。
+                        在庫が残っていて、入力内容に問題がなければ予約が確定します。
 
                     </div>
 
@@ -3157,21 +3157,24 @@ function finalizeReservation(){
     setTimeout(()=>{
 
         /*
-            殺到イベントが多いほど
-            成功率が下がる。
+            不公平なランダム抽選は行わない。
+            制限時間内で、かつゲーム内在庫が残っているなら成功。
+            予約殺到イベントは未確保の在庫だけを減らす演出です。
         */
 
-        const chance =
-            rushCount >= 2
-                ? .45
-                : .72;
+        const stockText =
+            document.getElementById("stock").textContent;
 
+        const stock =
+            parseInt(stockText, 10) || 0;
 
-        const success =
-            Math.random() < chance;
+        if(timeLeft <= 0){
 
+            finishGame(
+                "timeout"
+            );
 
-        if(success){
+        }else if(stock > 0){
 
             finishGame(
                 "success"
@@ -3416,12 +3419,9 @@ function finishGame(result){
 
     /*
         結果ペナルティ
+        SOLD OUTは在庫0というゲーム内イベントのみで発生する。
+        予約成功率をランダムに下げる処理は行わない。
     */
-
-    if(result === "soldout"){
-        score -= 80;
-    }
-
 
     if(result === "timeout"){
         score -= 120;
