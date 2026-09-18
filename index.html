@@ -1,7 +1,530 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVA Store | NEXORA X7</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="top"><div class="top-in"><a class="brand" href="index.html"><span class="brand-mark">N</span><span>NOVA STORE</span></a><nav class="nav"><a href="product.html">製品</a><a href="specs.html">仕様</a><a href="accessories.html">アクセサリー</a><a href="faq.html">サポート</a><a class="reserve-nav" href="reserve.html">予約する</a></nav></div></header>
-<section class="hero"><div class="container hero-in"><div><div class="eyebrow">NEXT GENERATION ENTERTAINMENT</div><h1>NEXORA<br>X7</h1><p>遊び方を、次の世代へ。高速処理、没入感の高い映像、静かでコンパクトな設計をひとつにまとめた、架空の次世代ゲーム機です。</p><div class="hero-actions"><a class="btn primary" href="reserve.html">予約受付ページへ</a><a class="btn dark" href="product.html">製品を見る</a></div></div><div class="hero-device"><div class="device"><div class="device-screen"></div><div class="device-slot"></div><div class="device-led"></div></div></div></div></section>
-<section class="section white"><div class="container"><div class="section-head"><div><h2>ゲーム体験を、再設計。</h2><p>架空ハードだからこそ、機能を自由に作り込みました。</p></div><a href="product.html" class="btn">詳しく見る</a></div><div class="cards"><div class="card"><div class="icon">⚡</div><h3>高速レスポンス</h3><p>独自のX7アーキテクチャにより、ゲーム起動からメニュー操作まで軽快な操作感を目指した設計。</p></div><div class="card"><div class="icon">◉</div><h3>4K / 120対応</h3><p>対応タイトルでは高解像度と高フレームレートを活かした、滑らかな映像表現を楽しめます。</p></div><div class="card"><div class="icon">◫</div><h3>静音設計</h3><p>大型ファンを低回転で動作させる冷却レイアウトで、長時間プレイにも配慮。</p></div></div></div></section>
-<section class="section dark-band"><div class="container"><div class="section-head"><div><h2>主要スペック</h2><p>架空製品 NEXORA X7 の想定仕様</p></div><a href="specs.html" class="btn dark">全仕様を見る</a></div><div class="spec-grid"><div class="spec"><b>CPU</b><span>8-Core X7</span></div><div class="spec"><b>GPU</b><span>24 TFLOPS</span></div><div class="spec"><b>ストレージ</b><span>1TB SSD</span></div><div class="spec"><b>映像出力</b><span>4K / 120fps</span></div><div class="spec"><b>通信</b><span>Wi-Fi 7</span></div><div class="spec"><b>端子</b><span>USB-C / HDMI 2.1</span></div><div class="spec"><b>重量</b><span>2.9 kg</span></div><div class="spec"><b>希望価格</b><span>¥59,800</span></div></div></div></section>
-<section class="section"><div class="container"><div class="cta"><div><h2>予約受付中</h2><p>1分間の予約ゲームとして、実際の購入サイト風フローを体験できます。</p></div><a class="btn" href="reserve.html">NEXORA X7を予約</a></div></div></section>
-<footer class="footer"><div class="container">NOVA STORE / NEXORA X7　架空の商品・架空のストアです。</div></footer></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="架空の最新ゲーム機 NEXORA X7 の商品紹介と予約ゲーム">
+<title>NOVA STORE | NEXORA X7</title>
+<style>
+:root{
+  --bg:#f4f6f8;--surface:#fff;--ink:#17212b;--muted:#687884;--line:#dbe2e7;
+  --blue:#2369d1;--blue2:#4b89ff;--blue-soft:#edf4ff;--dark:#09111a;--dark2:#111c27;
+  --green:#16885b;--green-soft:#eef9f4;--red:#d64050;--red-soft:#fff0f2;--gold:#a66a00;--gold-soft:#fff7e5;
+  --shadow:0 12px 38px rgba(24,48,72,.09);--radius:14px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif}button,input,select{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.container{width:min(1160px,92%);margin:auto}.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.top-in{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.6px}.brand-mark{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;display:grid;place-items:center}.nav{display:flex;gap:18px;align-items:center;font-size:12px;color:#4d5c67}.nav a:hover{color:var(--blue)}.nav .reserve-link{padding:9px 12px;border-radius:8px;background:var(--blue);color:#fff;font-weight:800}.hamb{display:none}
+@media(max-width:800px){.nav{display:none}.hamb{display:block;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px}}
+.hero{background:linear-gradient(135deg,#09131d,#102a43 48%,#14294e);color:#fff;min-height:540px;display:grid;place-items:center}.hero-in{display:grid;grid-template-columns:1.02fr .98fr;gap:35px;align-items:center;padding:65px 0}.eyebrow{font-size:10px;letter-spacing:2.5px;opacity:.68;margin-bottom:12px}.hero h1{font-size:clamp(52px,8vw,90px);line-height:.86;margin:0 0 22px;letter-spacing:-4px}.hero p{max-width:560px;color:#cbd7e2;line-height:1.9;font-size:14px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:12px 18px;border-radius:9px;font-weight:800;font-size:12px}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.dark{background:#132234;border-color:#31475d;color:#fff}.btn.success{background:var(--green);border-color:var(--green);color:#fff}.btn:hover{filter:brightness(1.04)}
+.device-wrap{display:grid;place-items:center}.device{width:min(420px,80vw);aspect-ratio:1.38/.95;position:relative;background:linear-gradient(145deg,#263744,#0c151c);border-radius:30px;box-shadow:0 35px 80px rgba(0,0,0,.42),inset 0 0 0 1px rgba(255,255,255,.08);transform:perspective(800px) rotateY(-10deg) rotateX(4deg)}.device-screen{position:absolute;left:7%;right:7%;top:7%;bottom:22%;border-radius:20px;background:radial-gradient(circle at 40% 30%,rgba(75,137,255,.22),transparent 35%),linear-gradient(135deg,#0a1522,#061019);border:1px solid rgba(255,255,255,.08)}.device-screen:before{content:"NEXORA X7";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.75);font-size:clamp(20px,4vw,34px);font-weight:900;letter-spacing:2px}.device-slot{position:absolute;left:14%;right:14%;height:8px;bottom:12%;border-radius:999px;background:#050a0f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}.device-led{position:absolute;right:9%;bottom:12%;width:9px;height:9px;border-radius:50%;background:#44e2ff;box-shadow:0 0 16px #44e2ff}
+.section{padding:72px 0}.section.white{background:#fff}.section.dark{background:var(--dark);color:#fff}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:28px}.section-head h2{margin:0;font-size:30px}.section-head p{margin:7px 0 0;color:var(--muted);font-size:12px}.dark .section-head p{color:#96a7b6}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}.dark .feature{background:#0e1924;border-color:#223645}.feature-icon{font-size:26px;margin-bottom:13px}.feature h3{margin:0 0 7px;font-size:16px}.feature p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}.dark .feature p{color:#9cabb7}.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.spec{border:1px solid #263849;background:#0e1924;border-radius:10px;padding:16px}.spec b{display:block;color:#8da1b3;font-size:10px}.spec span{display:block;margin-top:5px;font-size:15px;font-weight:800}.product-banner{padding:28px;border:1px solid #cad7e0;border-radius:var(--radius);background:linear-gradient(135deg,#fff,#f2f7fb);display:flex;justify-content:space-between;gap:25px;align-items:center}.product-banner h3{margin:0 0 7px;font-size:22px}.product-banner p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}.price{font-size:30px;font-weight:900;white-space:nowrap}.mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.mini{padding:18px;border:1px solid var(--line);background:#fff;border-radius:10px}.mini b{display:block;font-size:13px}.mini small{display:block;color:var(--muted);margin-top:6px;line-height:1.6}.faq{border-top:1px solid var(--line)}.faq details{padding:17px 0;border-bottom:1px solid var(--line)}.faq summary{cursor:pointer;font-size:13px;font-weight:800}.faq p{margin:10px 0 0;color:var(--muted);font-size:11px;line-height:1.8}
+.reserve-section{background:#f1f4f7;padding:72px 0 95px}.reserve-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:20px}.reserve-card,.side-card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.reserve-top{padding:23px 25px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;align-items:start}.reserve-top h2{margin:0;font-size:25px}.reserve-top p{margin:7px 0 0;color:var(--muted);font-size:11px;line-height:1.7}.reserve-price{text-align:right;font-size:12px;color:var(--muted)}.reserve-price strong{display:block;font-size:25px;color:var(--ink)}.steps{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--line);overflow-x:auto}.step{min-width:105px;padding:13px 5px;text-align:center;color:#84919a;font-size:10px;position:relative}.step.active{color:var(--blue);font-weight:800}.step.done{color:var(--green)}.step.active:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--blue)}.step-body{padding:25px}.step-panel{display:none}.step-panel.active{display:block}.step-title{margin:0;font-size:19px}.step-desc{color:var(--muted);font-size:11px;line-height:1.8;margin:6px 0 18px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;margin-bottom:6px;font-size:11px;font-weight:800}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #c9d2d8;border-radius:7px;background:#fff;outline:none;color:var(--ink)}.field textarea{min-height:95px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(35,105,209,.08)}.notice{padding:12px 14px;border-radius:8px;font-size:10px;line-height:1.7;margin-bottom:15px}.notice.info{background:var(--blue-soft);border:1px solid #cee1ff;color:#345b88}.notice.warn{background:var(--gold-soft);border:1px solid #ecd99f;color:#79560f}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.option{display:block;position:relative;padding:14px;border:1px solid #d2dae0;border-radius:8px;background:#fff;cursor:pointer}.option:hover{border-color:#a8bac6}.option.selected{background:var(--blue-soft);border-color:var(--blue)}.option input{position:absolute;opacity:0;pointer-events:none}.option strong{display:block;font-size:12px}.option small{display:block;color:var(--muted);font-size:9px;line-height:1.55;margin-top:4px}.times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.time{border:1px solid #cbd5dc;border-radius:8px;background:#fff;padding:11px 4px;text-align:center}.time strong{display:block;font-size:14px}.time small{display:block;color:var(--green);font-size:9px;margin-top:2px}.time.selected{background:var(--blue);color:#fff;border-color:var(--blue)}.time.selected small{color:#e6f2ff}.time.full{background:#f0f2f4;color:#8d999f;text-decoration:line-through;cursor:not-allowed}.time.full small{color:#909da4}.shipping{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.shipping-card{padding:14px;border:1px solid #d2dae0;border-radius:8px;cursor:pointer}.shipping-card.selected{background:var(--blue-soft);border-color:var(--blue)}.shipping-card strong{display:block;font-size:12px}.shipping-card small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.agreement{border:1px solid var(--line);border-radius:8px;overflow:hidden}.agreement-text{height:180px;overflow:auto;padding:15px;background:#f8fafb;color:#566771;font-size:10px;line-height:1.9}.check{display:flex;align-items:flex-start;gap:8px;padding:10px 13px;border-top:1px solid var(--line);font-size:10px;line-height:1.6}.check input{margin-top:3px;accent-color:var(--blue)}.summary{border:1px solid var(--line);border-radius:8px;overflow:hidden}.summary-row{display:grid;grid-template-columns:140px 1fr;border-bottom:1px solid var(--line)}.summary-row:last-child{border-bottom:0}.summary-label{padding:9px 11px;background:#f7f9fa;color:var(--muted);font-size:9px}.summary-value{padding:9px 11px;font-size:10px;font-weight:800}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.side-card{padding:18px}.side-title{font-size:11px;font-weight:800;margin-bottom:14px}.status{padding:10px 0;border-bottom:1px solid #edf0f2}.status:last-child{border-bottom:0}.status small{display:block;color:var(--muted);font-size:9px}.status strong{display:block;margin-top:4px;font-size:16px}.inventory{color:var(--red)}.bar{height:8px;background:#edf0f3;border-radius:99px;overflow:hidden;margin-top:8px}.bar>span{display:block;height:100%;width:92%;background:linear-gradient(90deg,#efbc4a,#d94757)}.log{max-height:290px;overflow:auto}.log-item{padding:7px 0;border-bottom:1px solid #edf0f2;font:9px/1.5 monospace;color:#74818a}.log-item.good{color:var(--green)}.log-item.alert{color:var(--red)}
+.rush{position:fixed;top:82px;left:50%;transform:translate(-50%,-25px);opacity:0;pointer-events:none;z-index:800;width:min(650px,92vw);display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border:1px solid #e7aab3;border-left:5px solid var(--red);border-radius:9px;background:#fff4f5;box-shadow:0 18px 50px rgba(80,20,30,.16);transition:.25s}.rush.show{opacity:1;transform:translate(-50%,0)}.rush strong{font-size:12px;color:#9d293a}.rush p{margin:4px 0 0;color:#77434a;font-size:10px;line-height:1.7}
+.security{position:fixed;inset:0;z-index:1500;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0a4f8f,#0d2a41)}.security.hidden{display:none}.security-card{width:min(470px,95vw);padding:30px;background:#fff;border-radius:15px;text-align:center;box-shadow:0 30px 100px rgba(0,0,0,.3)}.security-mark{width:62px;height:62px;margin:auto;border-radius:50%;display:grid;place-items:center;background:#edf4ff;font-size:28px}.security-card h2{margin:13px 0 7px}.security-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.8}.security-code{margin:20px 0;padding:17px;border:1px dashed #a8b9c5;border-radius:8px;background:#f7f9fa;font:32px monospace;letter-spacing:8px;color:var(--blue);user-select:none}.security-input{width:100%;padding:12px;border:1px solid #bfccd4;border-radius:7px;text-align:center;font:18px monospace;letter-spacing:3px;outline:none}.security-btn{width:100%;margin-top:9px;padding:13px;border:0;border-radius:7px;background:var(--blue);color:#fff;font-weight:800}.security-error{min-height:20px;margin-top:8px;color:var(--red);font-size:10px}
+.result-modal{position:fixed;inset:0;z-index:1400;display:none;justify-content:center;align-items:center;padding:20px;background:rgba(10,18,25,.72)}.result-modal.show{display:flex}.result{width:min(620px,95vw);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 30px 100px rgba(0,0,0,.3)}.result-head{text-align:center}.result-icon{width:62px;height:62px;margin:auto;border-radius:50%;display:grid;place-items:center;font-size:30px}.result-icon.ok{background:var(--green-soft);color:var(--green)}.result-icon.fail{background:var(--red-soft);color:var(--red)}.result-head h2{margin:13px 0 6px}.result-head p{margin:0;color:var(--muted);font-size:11px;line-height:1.7}.score-box{margin:20px 0;padding:19px;border-radius:9px;background:#f5f8fa;text-align:center}.score-label{color:var(--muted);font-size:9px;letter-spacing:2px}.final-score{font-size:47px;font-weight:900;color:var(--blue)}.result-table{border:1px solid var(--line);border-radius:8px;overflow:hidden}.result-line{display:flex;justify-content:space-between;gap:15px;padding:10px 12px;border-bottom:1px solid var(--line);font-size:10px}.result-line:last-child{border-bottom:0}.result-line span:first-child{color:var(--muted)}.result-line span:last-child{text-align:right;font-weight:800}.result-actions{display:flex;gap:10px;margin-top:20px}.result-actions .btn{flex:1}
+.toast{position:fixed;right:18px;bottom:18px;z-index:900;max-width:350px;background:#13212d;color:#fff;border:1px solid #3a5061;border-radius:10px;padding:12px 14px;font-size:10px;box-shadow:0 15px 50px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:translateY(0)}
+.shake{animation:shake .35s}@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+footer{background:#08111a;color:#8ea0af;text-align:center;padding:30px 20px;font-size:9px}
+@media(max-width:900px){.hero-in{grid-template-columns:1fr}.device-wrap{order:-1}.cards{grid-template-columns:1fr}.spec-grid{grid-template-columns:repeat(2,1fr)}.mini-grid{grid-template-columns:repeat(2,1fr)}.reserve-layout{grid-template-columns:1fr}}
+@media(max-width:650px){.product-banner{flex-direction:column;align-items:flex-start}.price{font-size:25px}.grid2,.options{grid-template-columns:1fr}.times{grid-template-columns:repeat(2,1fr)}.shipping{grid-template-columns:1fr}.spec-grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:1fr}.reserve-top{flex-direction:column}.reserve-price{text-align:left}.steps{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- Security gate -->
+<div class="security" id="security">
+  <div class="security-card">
+    <div class="security-mark">🔐</div>
+    <h2>予約受付セキュリティ確認</h2>
+    <p>NOVA STOREの先着予約受付へ進むには、表示されたセキュリティコードを入力してください。</p>
+    <div class="security-code" id="securityCode">------</div>
+    <input id="securityInput" class="security-input" maxlength="6" autocomplete="off" placeholder="6桁のコード">
+    <button class="security-btn" id="securityBtn">認証して予約へ進む</button>
+    <div class="security-error" id="securityError"></div>
+    <p style="margin-top:12px;font-size:9px">※架空商品の予約ゲームです。実際の注文・決済・配送は行われません。</p>
+  </div>
+</div>
+
+<!-- Rush alert -->
+<div class="rush" id="rush">
+  <div style="font-size:24px">🚨</div>
+  <div>
+    <strong>現在、NEXORA X7の予約が殺到しています</strong>
+    <p id="rushText">他の利用者による予約操作が急増しています。</p>
+  </div>
+</div>
+
+<header class="top">
+  <div class="container top-in">
+    <a href="#top" class="brand"><span class="brand-mark">N</span><span>NOVA STORE</span></a>
+    <nav class="nav">
+      <a href="#product">製品</a>
+      <a href="#specs">仕様</a>
+      <a href="#accessories">アクセサリー</a>
+      <a href="#faq">サポート</a>
+      <a href="#reserve" class="reserve-link">予約する</a>
+    </nav>
+    <button class="hamb" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'})">予約</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-in">
+      <div>
+        <div class="eyebrow">NEXT GENERATION ENTERTAINMENT</div>
+        <h1>NEXORA<br>X7</h1>
+        <p>高速処理、4K/120対応、1TB SSD、次世代ワイヤレス通信。ゲームの「すぐ遊べる」を突き詰めた、架空の最新家庭用ゲーム機です。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#reserve">予約ページへ</a>
+          <a class="btn dark" href="#product">製品を見る</a>
+        </div>
+      </div>
+      <div class="device-wrap">
+        <div class="device">
+          <div class="device-screen"></div>
+          <div class="device-slot"></div>
+          <div class="device-led"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product -->
+  <section class="section white" id="product">
+    <div class="container">
+      <div class="section-head">
+        <div><h2>ゲーム体験を、再設計。</h2><p>NEXORA X7は「速い・静か・わかりやすい」を目指した架空ハードです。</p></div>
+        <span class="btn">2026 NEW</span>
+      </div>
+      <div class="cards">
+        <div class="feature"><div class="feature-icon">⚡</div><h3>X7高速アーキテクチャ</h3><p>ゲーム起動やメニュー移動まで、待ち時間を意識させにくい操作感を想定した設計。</p></div>
+        <div class="feature"><div class="feature-icon">◉</div><h3>4K / 120fps</h3><p>対応タイトルでは高解像度と高フレームレートによる滑らかな映像表現を楽しめます。</p></div>
+        <div class="feature"><div class="feature-icon">◫</div><h3>静音冷却</h3><p>長時間プレイでも気になりにくい低回転冷却レイアウトを採用した想定です。</p></div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="product-banner">
+        <div><h3>NEXORA X7</h3><p>1TB SSD / Wi‑Fi 7 / HDMI 2.1 / USB‑C / 専用ワイヤレスコントローラー同梱</p></div>
+        <div class="price">¥59,800</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="section dark" id="specs">
+    <div class="container">
+      <div class="section-head">
+        <div><h2>主要仕様</h2><p>すべて架空の製品仕様です。</p></div>
+      </div>
+      <div class="spec-grid">
+        <div class="spec"><b>CPU</b><span>8-Core X7</span></div>
+        <div class="spec"><b>GPU</b><span>24 TFLOPS</span></div>
+        <div class="spec"><b>メモリ</b><span>24GB GDDR7</span></div>
+        <div class="spec"><b>ストレージ</b><span>1TB SSD</span></div>
+        <div class="spec"><b>映像</b><span>4K / 120fps</span></div>
+        <div class="spec"><b>通信</b><span>Wi‑Fi 7</span></div>
+        <div class="spec"><b>端子</b><span>HDMI 2.1 / USB‑C</span></div>
+        <div class="spec"><b>重量</b><span>2.9kg</span></div>
+        <div class="spec"><b>本体色</b><span>5カラー</span></div>
+        <div class="spec"><b>電源</b><span>AC 100–240V</span></div>
+        <div class="spec"><b>価格</b><span>¥59,800〜</span></div>
+        <div class="spec"><b>発売予定</b><span>2026年冬</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accessories -->
+  <section class="section white" id="accessories">
+    <div class="container">
+      <div class="section-head">
+        <div><h2>純正アクセサリー</h2><p>NEXORA X7と組み合わせて使える架空の周辺機器。</p></div>
+      </div>
+      <div class="mini-grid">
+        <div class="mini"><b>X7 Wireless Controller</b><small>¥8,980<br>低遅延ワイヤレス接続。</small></div>
+        <div class="mini"><b>X7 Headset</b><small>¥12,800<br>3Dサウンド対応の想定。</small></div>
+        <div class="mini"><b>Charging Stand</b><small>¥5,980<br>コントローラー2台同時充電。</small></div>
+        <div class="mini"><b>Travel Case</b><small>¥4,980<br>本体とコントローラーを収納。</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head"><div><h2>サポート・FAQ</h2><p>予約ゲーム内で表示される架空の商品情報です。</p></div></div>
+      <div class="faq">
+        <details><summary>NEXORA X7は実在する商品ですか？</summary><p>いいえ。NEXORA X7とNOVA STOREは、このゲームのために作った架空の名称・商品・店舗です。</p></details>
+        <details><summary>予約すると本当に商品が届きますか？</summary><p>届きません。このページでは予約ゲームの結果が表示されるだけで、実際の購入や配送は行いません。</p></details>
+        <details><summary>予約の制限時間はありますか？</summary><p>ゲーム開始後60秒です。セキュリティ認証前はカウントダウンしません。</p></details>
+        <details><summary>予約殺到の通知が出るのはなぜですか？</summary><p>ゲーム上の演出です。未選択の予約枠が減ることで、制限時間内に素早く進める意味を持たせています。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation game -->
+  <section class="reserve-section" id="reserve">
+    <div class="container">
+      <div class="reserve-layout">
+        <section class="reserve-card">
+          <div class="reserve-top">
+            <div><h2>NEXORA X7 予約受付</h2><p>先着予約ゲーム / 制限時間 60秒。時間枠を選択すると、その枠は仮確保されます。</p></div>
+            <div class="reserve-price">販売価格<strong>¥59,800</strong></div>
+          </div>
+
+          <div class="steps">
+            <div class="step active" data-step="0">購入者情報</div>
+            <div class="step" data-step="1">本体選択</div>
+            <div class="step" data-step="2">周辺機器</div>
+            <div class="step" data-step="3">配送</div>
+            <div class="step" data-step="4">支払い</div>
+            <div class="step" data-step="5">確認・同意</div>
+          </div>
+
+          <div class="step-body">
+            <!-- 0 -->
+            <section class="step-panel active" data-panel="0">
+              <h3 class="step-title">購入者情報</h3>
+              <p class="step-desc">予約者の基本情報を入力してください。</p>
+              <div class="notice info">ゲーム用の入力欄です。入力内容は外部へ送信されません。</div>
+              <div class="grid2">
+                <div class="field"><label>姓<span style="color:var(--red)">*</span></label><input id="lastName" placeholder="山田"></div>
+                <div class="field"><label>名<span style="color:var(--red)">*</span></label><input id="firstName" placeholder="太郎"></div>
+                <div class="field"><label>メールアドレス<span style="color:var(--red)">*</span></label><input id="email" type="email" placeholder="example@example.com"></div>
+                <div class="field"><label>電話番号<span style="color:var(--red)">*</span></label><input id="phone" placeholder="090-0000-0000"></div>
+                <div class="field"><label>購入目的</label><select id="purpose"><option>自分用</option><option>家族用</option><option>プレゼント</option><option>コレクション</option></select></div>
+                <div class="field"><label>ゲーム経験</label><select id="experience"><option>初心者</option><option>普通</option><option>かなり遊ぶ</option><option>コアゲーマー</option></select></div>
+              </div>
+              <div class="actions"><div></div><button class="btn primary" onclick="nextStep()">次へ</button></div>
+            </section>
+
+            <!-- 1 -->
+            <section class="step-panel" data-panel="1">
+              <h3 class="step-title">本体モデル</h3>
+              <p class="step-desc">本体モデル、カラー、ストレージを選択してください。</p>
+              <div class="options">
+                <label class="option"><input type="radio" name="model" value="NEXORA X7"><strong>NEXORA X7</strong><small>標準モデル / ¥59,800</small></label>
+                <label class="option"><input type="radio" name="model" value="NEXORA X7 Pro"><strong>NEXORA X7 Pro</strong><small>高性能モデル / ¥69,800</small></label>
+              </div>
+              <div class="grid2" style="margin-top:16px">
+                <div class="field"><label>カラー</label><select id="color"><option>ホワイト</option><option>ブラック</option><option>ブルー</option><option>シルバー</option><option>レッド</option></select></div>
+                <div class="field"><label>ストレージ</label><select id="storage"><option>1TB</option><option>2TB</option><option>4TB</option></select></div>
+              </div>
+              <div class="actions"><button class="btn" onclick="prevStep()">戻る</button><button class="btn primary" onclick="nextStep()">次へ</button></div>
+            </section>
+
+            <!-- 2 -->
+            <section class="step-panel" data-panel="2">
+              <h3 class="step-title">周辺機器</h3>
+              <p class="step-desc">一緒に予約するアクセサリーを選択できます。</p>
+              <div class="options">
+                <label class="option"><input class="addon" type="checkbox" value="追加コントローラー"><strong>追加コントローラー</strong><small>¥8,980</small></label>
+                <label class="option"><input class="addon" type="checkbox" value="専用ヘッドセット"><strong>専用ヘッドセット</strong><small>¥12,800</small></label>
+                <label class="option"><input class="addon" type="checkbox" value="充電スタンド"><strong>充電スタンド</strong><small>¥5,980</small></label>
+                <label class="option"><input class="addon" type="checkbox" value="専用ケース"><strong>専用トラベルケース</strong><small>¥4,980</small></label>
+              </div>
+              <div class="notice warn" style="margin-top:15px">予約殺到中でも、選択済みの時間枠は仮確保されたままです。</div>
+              <div class="actions"><button class="btn" onclick="prevStep()">戻る</button><button class="btn primary" onclick="nextStep()">次へ</button></div>
+            </section>
+
+            <!-- 3 -->
+            <section class="step-panel" data-panel="3">
+              <h3 class="step-title">配送方法</h3>
+              <p class="step-desc">配送方法を選択してください。店舗受取も利用できます。</p>
+              <div class="shipping">
+                <div class="shipping-card selected" data-shipping="通常配送"><strong>通常配送</strong><small>無料 / 発売後3〜5日</small></div>
+                <div class="shipping-card" data-shipping="お急ぎ便"><strong>お急ぎ便</strong><small>¥980 / 1〜2日</small></div>
+                <div class="shipping-card" data-shipping="店舗受取"><strong>店舗受取</strong><small>無料 / 発売日</small></div>
+              </div>
+              <div class="grid2" style="margin-top:16px">
+                <div class="field"><label>お届け時間</label><select id="deliveryTime"><option>指定なし</option><option>午前中</option><option>14:00〜16:00</option><option>16:00〜18:00</option><option>18:00〜20:00</option><option>19:00〜21:00</option></select></div>
+                <div class="field"><label>配送メモ</label><input id="deliveryMemo" placeholder="任意"></div>
+              </div>
+              <div class="actions"><button class="btn" onclick="prevStep()">戻る</button><button class="btn primary" onclick="nextStep()">支払いへ</button></div>
+            </section>
+
+            <!-- 4 -->
+            <section class="step-panel" data-panel="4">
+              <h3 class="step-title">お支払い方法</h3>
+              <p class="step-desc">ゲーム内で使用する支払い方法を選択してください。</p>
+              <div class="options">
+                <label class="option"><input type="radio" name="payment" value="クレジットカード"><strong>クレジットカード</strong><small>主要ブランド対応</small></label>
+                <label class="option"><input type="radio" name="payment" value="コンビニ払い"><strong>コンビニ払い</strong><small>受付番号を使って支払い</small></label>
+                <label class="option"><input type="radio" name="payment" value="電子マネー"><strong>電子マネー</strong><small>NOVA Payなど</small></label>
+                <label class="option"><input type="radio" name="payment" value="店舗決済"><strong>店舗決済</strong><small>店舗受取時に支払い</small></label>
+              </div>
+              <div class="field" style="margin-top:15px"><label>電子マネーの種類</label><select id="wallet"><option>選択しない</option><option>NOVA Pay</option><option>QuickPay</option><option>Game Wallet</option></select></div>
+              <div class="actions"><button class="btn" onclick="prevStep()">戻る</button><button class="btn primary" onclick="nextStep()">確認画面へ</button></div>
+            </section>
+
+            <!-- 5 -->
+            <section class="step-panel" data-panel="5">
+              <h3 class="step-title">確認・同意</h3>
+              <p class="step-desc">予約内容を確認し、すべての確認事項にチェックしてから確定してください。</p>
+              <div class="summary" id="summary"></div>
+              <div class="agreement" style="margin-top:16px">
+                <div class="agreement-text">
+                  <strong>NOVA STORE NEXORA X7 予約サービス規約（ゲーム用）</strong><br><br>
+                  本ページは架空のゲーム機予約システムを再現したゲームです。実際の商品購入、決済、配送、在庫確保、個人情報の送信は行われません。ゲーム開始後の制限時間は60秒です。予約時間を選択すると、その時間枠はゲーム内で仮確保され、予約殺到イベントでは奪われません。最終確定ボタンを押した時点で、期限内に必要な入力と同意が完了していれば予約成功となります。期限を過ぎた場合はゲーム終了です。
+                </div>
+                <label class="check"><input type="checkbox" id="agreeTerms"> 利用規約を確認しました。</label>
+                <label class="check"><input type="checkbox" id="agreeReservation"> 予約内容を確認しました。</label>
+                <label class="check"><input type="checkbox" id="agreeGame"> 架空の予約ゲームであることを確認しました。</label>
+                <label class="check"><input type="checkbox" id="agreeTime"> 制限時間について確認しました。</label>
+              </div>
+              <div class="notice warn" style="margin-top:15px">最終確定後はゲーム結果が表示されます。ランダムで理不尽に失敗することはありません。</div>
+              <div class="actions"><button class="btn" onclick="prevStep()">戻る</button><button class="btn success" id="finalButton" onclick="finalizeReservation()">予約を確定する</button></div>
+            </section>
+          </div>
+        </section>
+
+        <aside>
+          <div class="side-card">
+            <div class="side-title">NEXORA X7 予約状況</div>
+            <div class="status"><small>現在の在庫</small><strong class="inventory" id="stock">6台</strong><div class="bar"><span id="stockBar"></span></div></div>
+            <div class="status"><small>予約希望者</small><strong id="applicants">18,421人</strong></div>
+            <div class="status"><small>予約倍率</small><strong id="倍率">31.7倍</strong></div>
+            <div class="status"><small>制限時間</small><strong id="sideTimer">01:00</strong></div>
+            <div class="status"><small>あなたのスコア</small><strong id="liveScore">0</strong></div>
+          </div>
+          <div class="side-card" style="margin-top:15px">
+            <div class="side-title">システムログ</div>
+            <div class="log" id="activity">
+              <div class="log-item">[SYSTEM] 予約システム準備完了</div>
+              <div class="log-item">[SYSTEM] 在庫確認完了</div>
+              <div class="log-item">[SYSTEM] 予約受付待機中</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>NOVA STORE / NEXORA X7　架空の商品・架空のストア・ゲーム用予約システムです。</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- Result -->
+<div class="result-modal" id="resultModal">
+  <div class="result">
+    <div class="result-head">
+      <div class="result-icon ok" id="resultIcon">✓</div>
+      <h2 id="resultTitle">予約が完了しました</h2>
+      <p id="resultMessage">予約枠を確保しました。</p>
+    </div>
+    <div class="score-box"><div class="score-label">YOUR SCORE</div><div class="final-score" id="finalScore">0</div></div>
+    <div class="result-table" id="resultTable"></div>
+    <div class="result-actions"><button class="btn primary" id="closeResult">結果を閉じる</button><button class="btn" id="restart">もう一度挑戦</button></div>
+  </div>
+</div>
+
+<script>
+const GAME_TIME = 60;
+let currentStep = 0;
+let timeLeft = GAME_TIME;
+let timerId = null;
+let rushTimerId = null;
+let started = false;
+let finished = false;
+let selectedTime = "";
+let selectedShipping = "通常配送";
+let slotHeld = false;
+let score = 0;
+let mistakes = 0;
+let actions = 0;
+let rushCount = 0;
+let securityAttempts = 0;
+
+function $(id){ return document.getElementById(id); }
+function val(id){ return $(id).value.trim(); }
+function selectedRadio(name){ const el=document.querySelector('input[name="'+name+'"]:checked'); return el?el.value:""; }
+function addScore(n){ score += n; if(score<0) score=0; updateScore(); }
+function updateScore(){ $('score').textContent=Math.round(score); $('liveScore').textContent=Math.round(score); }
+function formatTime(s){ return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+function escapeHtml(text){ return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+
+function addLog(text,type=""){
+  const item=document.createElement("div"); item.className="log-item "+type;
+  const now=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  item.textContent=`[${now}] ${text}`;
+  $('activity').prepend(item);
+  while($('activity').children.length>24) $('activity').removeChild($('activity').lastElementChild);
+}
+function toast(text){ $('toast').textContent=text; $('toast').classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>$('toast').classList.remove("show"),2600); }
+
+/* Security */
+let securityCode="";
+function generateSecurityCode(){
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  securityCode=""; for(let i=0;i<6;i++) securityCode += chars[Math.floor(Math.random()*chars.length)];
+  $('securityCode').textContent=securityCode;
+}
+generateSecurityCode();
+function checkSecurity(){
+  const input=$('securityInput').value.trim().toUpperCase(); securityAttempts++;
+  if(input===securityCode){
+    $('security').classList.add("hidden"); addScore(20); addLog("[SECURITY] 認証成功","good"); startGame();
+    setTimeout(()=>$('reserve').scrollIntoView({behavior:"smooth"}),120);
+  }else{
+    mistakes++; addScore(-10); $('securityError').textContent="セキュリティコードが一致しません。";
+    $('security-card')?.classList.add("shake"); $('securityInput').value=""; addLog("[SECURITY] 認証失敗","alert");
+  }
+}
+$('securityBtn').addEventListener("click",checkSecurity);
+$('securityInput').addEventListener("keydown",e=>{if(e.key==="Enter")checkSecurity();});
+
+/* Timer */
+function startGame(){
+  if(started) return; started=true; updateTimer();
+  timerId=setInterval(()=>{
+    if(finished) return;
+    timeLeft--; updateTimer();
+    if(timeLeft===15) showRush("残り15秒です。急いで最終確定まで進めてください。");
+    if(timeLeft<=0){timeLeft=0;updateTimer();finishGame("timeout");}
+  },1000);
+  scheduleRush(); addLog("[SYSTEM] 60秒予約チャレンジ開始");
+}
+function updateTimer(){ $('timer') && ($('timer').textContent=formatTime(timeLeft)); $('sideTimer').textContent=formatTime(timeLeft); if(timeLeft<=15){$('timer')?.classList.add("danger");} }
+
+/* Steps */
+function renderStep(){
+  document.querySelectorAll(".step-panel").forEach(p=>p.classList.toggle("active",Number(p.dataset.panel)===currentStep));
+  document.querySelectorAll(".step").forEach(s=>{const n=Number(s.dataset.step);s.classList.toggle("active",n===currentStep);s.classList.toggle("done",n<currentStep);});
+  window.scrollTo({top:Math.max(0,$('reserve').offsetTop-80),behavior:"smooth"});
+}
+function validateStep(step){
+  if(step===0){
+    if(!val("lastName")||!val("firstName")||!val("email")||!val("phone")){showError("姓・名・メールアドレス・電話番号を入力してください。");return false;} return true;
+  }
+  if(step===1){ if(!selectedRadio("model")){showError("本体モデルを選択してください。");return false;} return true; }
+  if(step===2){ return true; }
+  if(step===3){ if(!selectedTime){showError("予約時間を選択してください。");return false;} return true; }
+  if(step===4){ if(!selectedRadio("payment")){showError("支払い方法を選択してください。");return false;} return true; }
+  return true;
+}
+function showError(msg){mistakes++; addScore(-8); addLog("[ERROR] "+msg,"alert"); toast(msg);}
+function nextStep(){
+  if(finished) return;
+  if(!validateStep(currentStep)) return;
+  if(currentStep<5){ currentStep++; actions++; addScore(12); if(currentStep===5)buildSummary(); renderStep(); addLog(`[USER] STEP ${currentStep+1}へ移動`); }
+}
+function prevStep(){ if(finished)return; if(currentStep>0){currentStep--;renderStep();addLog(`[USER] STEP ${currentStep+1}へ戻る`);} }
+
+/* Radio / options */
+document.querySelectorAll('.option input').forEach(input=>{
+  input.addEventListener('change',()=>{
+    if(input.name){ document.querySelectorAll('.option input[name="'+input.name+'"]').forEach(x=>x.closest('.option').classList.remove('selected')); }
+    input.closest('.option').classList.toggle('selected',input.checked); actions++; addScore(input.type==='checkbox'?3:4);
+  });
+});
+
+/* Time slots */
+const times=["09:00","09:30","10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
+function createTimeSlots(){
+  const container=document.createElement("div"); container.className="times";
+  times.forEach((time,i)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="time";
+    const full=[1,4,7,9,12,15].includes(i);
+    if(full){b.disabled=true;b.classList.add("full");b.innerHTML=`<strong>${time}</strong><small>予約済み</small>`;}
+    else{b.innerHTML=`<strong>${time}</strong><small>空きあり</small>`;b.addEventListener("click",()=>{
+      document.querySelectorAll(".time").forEach(x=>x.classList.remove("selected")); b.classList.add("selected"); selectedTime=time; slotHeld=true; actions++; addScore(8); addLog(`[USER] 予約時間 ${time} を仮確保`,"good"); toast(`${time} の予約枠を仮確保しました`);
+    });}
+    container.appendChild(b);
+  });
+  const panel=document.querySelector('[data-panel="3"] .step-desc'); panel.insertAdjacentElement("afterend",container);
+}
+createTimeSlots();
+
+/* Shipping */
+document.querySelectorAll('.shipping-card').forEach(card=>card.addEventListener('click',()=>{
+  document.querySelectorAll('.shipping-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedShipping=card.dataset.shipping; actions++; addScore(5); addLog(`[USER] 配送方法：${selectedShipping}`);
+}));
+
+/* Summary */
+function summaryRow(label,value){return `<div class="summary-row"><div class="summary-label">${escapeHtml(label)}</div><div class="summary-value">${escapeHtml(value||"未入力")}</div></div>`;}
+function buildSummary(){
+  const addons=[...document.querySelectorAll('.addon:checked')].map(x=>x.value);
+  $('summary').innerHTML=
+    summaryRow("購入者",`${val('lastName')} ${val('firstName')}`)+
+    summaryRow("メール",val('email'))+
+    summaryRow("本体",selectedRadio('model'))+
+    summaryRow("カラー",val('color'))+
+    summaryRow("ストレージ",val('storage'))+
+    summaryRow("周辺機器",addons.length?addons.join(" / "):"なし")+
+    summaryRow("配送",selectedShipping)+
+    summaryRow("お届け時間",val('deliveryTime'))+
+    summaryRow("支払い",selectedRadio('payment'));
+}
+
+/* Rush */
+function scheduleRush(){
+  if(finished)return;
+  rushTimerId=setTimeout(()=>{showRush();scheduleRush();},11000+Math.random()*8000);
+}
+function showRush(message){
+  if(finished)return; rushCount++; $('rushText').textContent=message||"他の利用者による予約操作が急増しています。未確保の枠が減少しています。"; $('rush').classList.add('show');
+  addLog("[NOTICE] 現在、NEXORA X7の予約が殺到しています。","alert");
+  if(!slotHeld){
+    const s=parseInt($('stock').textContent)||1; $('stock').textContent=Math.max(1,s-1)+"台";
+    const n=Math.max(8,(Math.max(1,s-1))*15); $('stockBar').style.width=n+"%";
+  }
+  setTimeout(()=>$('rush').classList.remove('show'),4500);
+}
+setInterval(()=>{
+  if(!started||finished)return;
+  const p=Math.floor(14000+Math.random()*85000); const m=(28+Math.random()*45+rushCount*4).toFixed(1);
+  $('applicants').textContent=p.toLocaleString()+"人"; $('倍率').textContent=m+"倍";
+},2200);
+
+/* Final */
+function finalizeReservation(){
+  if(finished)return;
+  const ids=['agreeTerms','agreeReservation','agreeGame','agreeTime'];
+  if(!ids.every(id=>$(id).checked)){mistakes++;addScore(-8);toast("4つの確認事項すべてにチェックしてください。");addLog("[ERROR] 同意未完了","alert");return;}
+  if(!selectedTime||!slotHeld){toast("予約時間を選択してください。");return;}
+  const button=$('finalButton'); button.disabled=true; button.textContent="予約処理中..."; actions++; addScore(20); addLog("[SYSTEM] 最終予約リクエスト受付");
+  /* 公平ルール：期限内に正しい入力が完了していれば成功。ランダム抽選なし。 */
+  setTimeout(()=>finishGame("success"),700);
+}
+
+/* Result */
+function finishGame(result){
+  if(finished)return; finished=true; clearInterval(timerId); clearTimeout(rushTimerId);
+  let finalScore=score + timeLeft*4 + 40;
+  if(timeLeft>=40)finalScore+=50; else if(timeLeft>=20)finalScore+=25;
+  if(actions>=10)finalScore+=25;
+  if(rushCount>=1)finalScore+=10;
+  finalScore-=mistakes*10;
+  if(result==='timeout')finalScore-=100;
+  finalScore=Math.max(0,Math.round(finalScore));
+  $('finalScore').textContent=finalScore;
+  const icon=$('resultIcon'); const title=$('resultTitle'); const msg=$('resultMessage'); icon.className="result-icon";
+  if(result==='success'){
+    icon.classList.add('ok'); icon.textContent='✓'; title.textContent='予約が完了しました'; msg.textContent='予約枠を仮確保したまま、期限内に最終確定まで完了しました。';
+  }else{
+    icon.classList.add('fail'); icon.textContent='⏰'; title.textContent='時間切れ'; msg.textContent='制限時間内に最終確定まで完了できませんでした。';
+  }
+  const order=result==='success'?`NX7-${Math.floor(100000+Math.random()*900000)}`:"発行なし";
+  $('resultTable').innerHTML=
+    summaryRow('結果',result==='success'?'予約確定':'時間切れ')+
+    summaryRow('予約番号',order)+
+    summaryRow('商品',selectedRadio('model')||'未選択')+
+    summaryRow('カラー',val('color'))+
+    summaryRow('ストレージ',val('storage'))+
+    summaryRow('配送',selectedShipping)+
+    summaryRow('支払い方法',selectedRadio('payment')||'未選択')+
+    summaryRow('残り時間',formatTime(timeLeft))+
+    summaryRow('操作回数',actions)+
+    summaryRow('ミス回数',mistakes)+
+    summaryRow('予約殺到',rushCount+'回')+
+    summaryRow('最終スコア',finalScore+'点');
+  $('resultModal').classList.add('show'); addLog(result==='success'?'[SYSTEM] 予約成功':'[SYSTEM] 時間切れ',result==='success'?'good':'alert');
+}
+$('closeResult').addEventListener('click',()=>$('resultModal').classList.remove('show'));
+$('restart').addEventListener('click',()=>location.reload());
+
+updateScore(); updateTimer();
+</script>
+</body>
+</html>
